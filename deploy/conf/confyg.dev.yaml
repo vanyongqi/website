@@ -1,0 +1,11 @@
+server:
+  env: development
+  cors:
+    allowOrigins: ["http://localhost:5173"]
+
+log:
+  level: debug
+  json: false
+
+database:
+  dsn: "app:change_me_app@tcp(localhost:3306)/appdb?parseTime=true&charset=utf8mb4&loc=Local"
