@@ -1,0 +1,669 @@
+/* ===== 精细主题系统 ===== */
+/* 参考 liblib.art 的设计规范 */
+
+/* 字体系统 */
+:root {
+  /* 主字体栈 - 参考 liblib.art */
+  --font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  
+  /* 等宽字体 */
+  --font-family-mono: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  
+  /* 字体大小系统 */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  
+  /* 行高系统 */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  
+  /* 字重系统 */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+}
+
+/* 颜色系统 - 浅色主题（参考 liblib.art 高级配色） */
+:root {
+  /* 主色调 - Gemini 风格炫彩蓝（柔和版） */
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;  /* 主色 - Gemini 蓝 */
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+  
+  /* 辅助色 - Gemini 风格炫彩紫（柔和版） */
+  --color-secondary-50: #faf5ff;
+  --color-secondary-100: #f3e8ff;
+  --color-secondary-200: #e9d5ff;
+  --color-secondary-300: #d8b4fe;
+  --color-secondary-400: #c084fc;
+  --color-secondary-500: #a855f7;  /* 辅助色 - Gemini 紫 */
+  --color-secondary-600: #9333ea;
+  --color-secondary-700: #7c3aed;
+  --color-secondary-800: #6b21a8;
+  --color-secondary-900: #581c87;
+  
+  /* 成功色 - Gemini 风格炫彩绿（柔和版） */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;  /* 成功色 - Gemini 绿 */
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-success-900: #14532d;
+  
+  /* 警告色 - Gemini 风格炫彩橙（柔和版） */
+  --color-warning-50: #fff7ed;
+  --color-warning-100: #ffedd5;
+  --color-warning-200: #fed7aa;
+  --color-warning-300: #fdba74;
+  --color-warning-400: #fb923c;
+  --color-warning-500: #f97316;  /* 警告色 - Gemini 橙 */
+  --color-warning-600: #ea580c;
+  --color-warning-700: #c2410c;
+  --color-warning-800: #9a3412;
+  --color-warning-900: #7c2d12;
+  
+  /* 错误色 - Gemini 风格炫彩红（柔和版） */
+  --color-error-50: #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-200: #fecaca;
+  --color-error-300: #fca5a5;
+  --color-error-400: #f87171;
+  --color-error-500: #ef4444;  /* 错误色 - Gemini 红 */
+  --color-error-600: #dc2626;
+  --color-error-700: #b91c1c;
+  --color-error-800: #991b1b;
+  --color-error-900: #7f1d1d;
+  
+  /* 中性色 - 高级灰色系（参考 Mantine） */
+  --color-gray-50: #f8f9fa;
+  --color-gray-100: #f1f3f5;
+  --color-gray-200: #e9ecef;
+  --color-gray-300: #dee2e6;
+  --color-gray-400: #ced4da;
+  --color-gray-500: #adb5bd;
+  --color-gray-600: #868e96;
+  --color-gray-700: #495057;
+  --color-gray-800: #343a40;
+  --color-gray-900: #212529;
+  
+  /* 特殊色 - Gemini 风格炫彩渐变 */
+  --color-brand-50: #fdf4ff;
+  --color-brand-100: #fae8ff;
+  --color-brand-200: #f5d0fe;
+  --color-brand-300: #f0abfc;
+  --color-brand-400: #e879f9;
+  --color-brand-500: #d946ef;  /* 品牌色 - Gemini 粉紫 */
+  --color-brand-600: #c026d3;
+  --color-brand-700: #a21caf;
+  --color-brand-800: #86198f;
+  --color-brand-900: #701a75;
+  
+  /* 语义化颜色（更高级的对比度） */
+  --color-text-primary: #212529;
+  --color-text-secondary: #495057;
+  --color-text-tertiary: #868e96;
+  --color-text-quaternary: #adb5bd;
+  --color-text-inverse: #ffffff;
+  --color-text-muted: #6c757d;
+  
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f9fa;
+  --color-bg-tertiary: #f1f3f5;
+  --color-bg-quaternary: #e9ecef;
+  --color-bg-elevated: #ffffff;
+  --color-bg-subtle: #f8f9fa;
+  
+  --color-border-primary: #e9ecef;
+  --color-border-secondary: #dee2e6;
+  --color-border-tertiary: #ced4da;
+  --color-border-focus: #5c7cfa;
+  
+  /* 阴影系统（参考 Mantine 的精细阴影） */
+  --shadow-xs: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05), 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 0 0.625rem 0.9375rem -0.3125rem, rgba(0, 0, 0, 0.04) 0 0.4375rem 0.4375rem -0.3125rem;
+  --shadow-md: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 0 1.25rem 1.5625rem -0.3125rem, rgba(0, 0, 0, 0.04) 0 0.625rem 0.625rem -0.3125rem;
+  --shadow-lg: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 0 1.75rem 1.4375rem -0.4375rem, rgba(0, 0, 0, 0.04) 0 0.75rem 0.75rem -0.4375rem;
+  --shadow-xl: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 0 2.25rem 1.75rem -0.4375rem, rgba(0, 0, 0, 0.04) 0 1.0625rem 1.0625rem -0.4375rem;
+  --shadow-2xl: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 0 2.25rem 1.75rem -0.4375rem, rgba(0, 0, 0, 0.04) 0 1.0625rem 1.0625rem -0.4375rem;
+  
+  /* 特殊阴影 */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-card-hover: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  --shadow-floating: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  /* 圆角系统 */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;   /* 2px */
+  --radius-base: 0.25rem;  /* 4px */
+  --radius-md: 0.375rem;   /* 6px */
+  --radius-lg: 0.5rem;     /* 8px */
+  --radius-xl: 0.75rem;    /* 12px */
+  --radius-2xl: 1rem;      /* 16px */
+  --radius-3xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+  
+  /* 间距系统 */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;    /* 4px */
+  --spacing-2: 0.5rem;     /* 8px */
+  --spacing-3: 0.75rem;    /* 12px */
+  --spacing-4: 1rem;       /* 16px */
+  --spacing-5: 1.25rem;    /* 20px */
+  --spacing-6: 1.5rem;     /* 24px */
+  --spacing-8: 2rem;       /* 32px */
+  --spacing-10: 2.5rem;    /* 40px */
+  --spacing-12: 3rem;      /* 48px */
+  --spacing-16: 4rem;      /* 64px */
+  --spacing-20: 5rem;      /* 80px */
+  --spacing-24: 6rem;      /* 96px */
+  
+  /* 过渡动画 */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+  
+  /* Z-index 层级 */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* 深色主题（高级深色配色） */
+[data-theme="dark"] {
+  /* 主色调 - 深色模式下的靛蓝 */
+  --color-primary-50: #0f1419;
+  --color-primary-100: #1a2332;
+  --color-primary-200: #2d3748;
+  --color-primary-300: #4a5568;
+  --color-primary-400: #718096;
+  --color-primary-500: #5c7cfa;  /* 保持主色 */
+  --color-primary-600: #748ffc;
+  --color-primary-700: #91a7ff;
+  --color-primary-800: #bac8ff;
+  --color-primary-900: #dbe4ff;
+  
+  /* 辅助色 - 深色模式下的青色 */
+  --color-secondary-50: #0a1a1e;
+  --color-secondary-100: #142d33;
+  --color-secondary-200: #1e4551;
+  --color-secondary-300: #2a5d6e;
+  --color-secondary-400: #3a768a;
+  --color-secondary-500: #22b8cf;  /* 保持辅助色 */
+  --color-secondary-600: #3bc9db;
+  --color-secondary-700: #66d9e8;
+  --color-secondary-800: #99e9f2;
+  --color-secondary-900: #c5f6fa;
+  
+  /* 语义化颜色 - 深色（磨砂暗蓝色主题） */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e9ecef;
+  --color-text-tertiary: #adb5bd;
+  --color-text-quaternary: #6c757d;
+  --color-text-inverse: #212529;
+  --color-text-muted: #868e96;
+  
+  --color-bg-primary: #0f1419;      /* 磨砂暗蓝色背景 */
+  --color-bg-secondary: #1a2332;    /* 稍亮的磨砂蓝 */
+  --color-bg-tertiary: #2d3748;     /* 卡片背景 - 磨砂蓝灰 */
+  --color-bg-quaternary: #4a5568;   /* 边框颜色 - 磨砂蓝灰 */
+  --color-bg-elevated: #1a2332;     /* 悬浮元素 - 磨砂蓝 */
+  --color-bg-subtle: #0f1419;       /* 微妙背景 - 磨砂暗蓝 */
+
+  --color-border-primary: rgba(255, 255, 255, 0.06);    /* 磨砂蓝灰边框 - 非常柔和的半透明 */
+  --color-border-secondary: rgba(255, 255, 255, 0.04);  /* 磨砂蓝灰边框 - 更柔和 */
+  --color-border-tertiary: rgba(255, 255, 255, 0.02);   /* 磨砂蓝边框 - 最柔和 */
+  --color-border-focus: #5c7cfa;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);     /* 柔和边框 - 用于分割线 */
+  
+  /* 深色主题阴影（更柔和） */
+  --shadow-xs: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3), 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 0 0.625rem 0.9375rem -0.3125rem, rgba(0, 0, 0, 0.2) 0 0.4375rem 0.4375rem -0.3125rem;
+  --shadow-md: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 0 1.25rem 1.5625rem -0.3125rem, rgba(0, 0, 0, 0.2) 0 0.625rem 0.625rem -0.3125rem;
+  --shadow-lg: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 0 1.75rem 1.4375rem -0.4375rem, rgba(0, 0, 0, 0.2) 0 0.75rem 0.75rem -0.4375rem;
+  --shadow-xl: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 0 2.25rem 1.75rem -0.4375rem, rgba(0, 0, 0, 0.2) 0 1.0625rem 1.0625rem -0.4375rem;
+  --shadow-2xl: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 0 2.25rem 1.75rem -0.4375rem, rgba(0, 0, 0, 0.2) 0 1.0625rem 1.0625rem -0.4375rem;
+  
+  /* 深色主题特殊阴影 */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
+  --shadow-card-hover: 0 3px 6px rgba(0, 0, 0, 0.5), 0 3px 6px rgba(0, 0, 0, 0.7);
+  --shadow-floating: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* 全局样式重置 */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+/* 标题样式 */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+}
+
+h1 { font-size: var(--font-size-4xl); }
+h2 { font-size: var(--font-size-3xl); }
+h3 { font-size: var(--font-size-2xl); }
+h4 { font-size: var(--font-size-xl); }
+h5 { font-size: var(--font-size-lg); }
+h6 { font-size: var(--font-size-base); }
+
+/* 段落样式 */
+p {
+  margin: 0;
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* 链接样式 */
+a {
+  color: var(--color-primary-500);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-600);
+}
+
+/* 按钮基础样式 */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+/* 输入框基础样式 */
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2) var(--spacing-3);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: all var(--transition-fast);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.1);
+}
+
+/* 卡片基础样式 */
+.card {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* 工具类 */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-inverse { color: var(--color-text-inverse); }
+
+.bg-primary { background-color: var(--color-bg-primary); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-tertiary { background-color: var(--color-bg-tertiary); }
+
+.border-primary { border-color: var(--color-border-primary); }
+.border-secondary { border-color: var(--color-border-secondary); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+
+.transition-fast { transition: all var(--transition-fast); }
+.transition-base { transition: all var(--transition-base); }
+.transition-slow { transition: all var(--transition-slow); }
+
+/* ===== 苹果风格拟态搜索框 ===== */
+.neumorphic-search-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.neumorphic-search-input .ant-input {
+  border-radius: 9999px !important;
+  border: none !important;
+  background: linear-gradient(145deg, #f5f5f5, #ebebeb) !important;
+  box-shadow: 
+    inset 4px 4px 12px rgba(0, 0, 0, 0.1),
+    inset -4px -4px 12px rgba(255, 255, 255, 0.8),
+    0 6px 16px rgba(0, 0, 0, 0.06) !important;
+  padding: 14px 48px 14px 24px !important;
+  transition: all var(--transition-base) !important;
+  height: 48px !important;
+  font-size: 13px !important;
+  color: var(--color-text-primary) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.2px !important;
+}
+
+.neumorphic-search-input .ant-input:hover {
+  background: linear-gradient(145deg, #f8f8f8, #eeeeee) !important;
+  box-shadow: 
+    inset 3px 3px 10px rgba(0, 0, 0, 0.12),
+    inset -3px -3px 10px rgba(255, 255, 255, 0.85),
+    0 8px 20px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-2px) !important;
+}
+
+.neumorphic-search-input .ant-input:focus {
+  background: linear-gradient(145deg, #fafafa, #f0f0f0) !important;
+  box-shadow: 
+    inset 2px 2px 8px rgba(0, 0, 0, 0.15),
+    inset -2px -2px 8px rgba(255, 255, 255, 0.9),
+    0 10px 24px rgba(0, 0, 0, 0.1) !important;
+  outline: none !important;
+  transform: translateY(-2px) !important;
+}
+
+.neumorphic-search-input .ant-input::placeholder {
+  color: var(--color-text-tertiary) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.2px !important;
+  opacity: 0.7 !important;
+}
+
+.neumorphic-search-button {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(145deg, #e0e0e0, #d5d5d5) !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all var(--transition-base) !important;
+  z-index: 10 !important;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.neumorphic-search-button:hover {
+  background: linear-gradient(145deg, #e8e8e8, #dddddd) !important;
+  transform: translateY(-50%) scale(1.05) !important;
+  box-shadow: 
+    inset 1px 1px 3px rgba(0, 0, 0, 0.12),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.8),
+    0 4px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+.neumorphic-search-button:active {
+  transform: translateY(-50%) scale(0.98) !important;
+  box-shadow: 
+    0 1px 4px rgba(14, 165, 233, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.neumorphic-search-button .anticon {
+  color: var(--color-text-secondary) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+/* 暗色主题下的拟态搜索框 */
+[data-theme="dark"] .neumorphic-search-input .ant-input {
+  background: linear-gradient(145deg, #2d3748, #1a2332) !important;
+  box-shadow: 
+    inset 4px 4px 12px rgba(0, 0, 0, 0.6),
+    inset -4px -4px 12px rgba(255, 255, 255, 0.08),
+    0 6px 16px rgba(0, 0, 0, 0.4) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .neumorphic-search-input .ant-input:hover {
+  background: linear-gradient(145deg, #374151, #1f2937) !important;
+  box-shadow: 
+    inset 3px 3px 10px rgba(0, 0, 0, 0.7),
+    inset -3px -3px 10px rgba(255, 255, 255, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.5) !important;
+  transform: translateY(-2px) !important;
+}
+
+[data-theme="dark"] .neumorphic-search-input .ant-input:focus {
+  background: linear-gradient(145deg, #3f4a5c, #243447) !important;
+  box-shadow: 
+    inset 2px 2px 8px rgba(0, 0, 0, 0.8),
+    inset -2px -2px 8px rgba(255, 255, 255, 0.12),
+    0 0 0 3px rgba(14, 165, 233, 0.4),
+    0 10px 24px rgba(0, 0, 0, 0.6) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* 暗色主题下的搜索按钮 */
+[data-theme="dark"] .neumorphic-search-button {
+  background: linear-gradient(145deg, #4a5568, #2d3748) !important;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .neumorphic-search-button:hover {
+  background: linear-gradient(145deg, #5a6578, #3d4858) !important;
+  box-shadow: 
+    inset 1px 1px 3px rgba(0, 0, 0, 0.5),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .neumorphic-search-button:active {
+  transform: translateY(-50%) scale(0.98) !important;
+  box-shadow: 
+    inset 3px 3px 6px rgba(0, 0, 0, 0.6),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .neumorphic-search-button .anticon {
+  color: var(--color-text-primary) !important;
+}
+
+/* ===== 拟态按钮样式 ===== */
+.neumorphic-button {
+  border-radius: 12px !important;
+  background: linear-gradient(145deg, #f0f0f0, #e6e6e6) !important;
+  border: none !important;
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.1),
+    -4px -4px 8px rgba(255, 255, 255, 0.8) !important;
+  transition: all var(--transition-base) !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.neumorphic-button:hover {
+  background: linear-gradient(145deg, #f5f5f5, #e8e8e8) !important;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.15),
+    -2px -2px 4px rgba(255, 255, 255, 0.9) !important;
+  transform: translateY(-1px) !important;
+}
+
+.neumorphic-button:active {
+  background: linear-gradient(145deg, #e8e8e8, #f0f0f0) !important;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.7) !important;
+  transform: translateY(0) !important;
+}
+
+.neumorphic-primary-button {
+  border-radius: 12px !important;
+  background: linear-gradient(145deg, var(--color-primary-500), var(--color-primary-600)) !important;
+  border: none !important;
+  box-shadow: 
+    4px 4px 8px rgba(14, 165, 233, 0.3),
+    -4px -4px 8px rgba(14, 165, 233, 0.1) !important;
+  transition: all var(--transition-base) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 8px 16px !important;
+  height: 40px !important;
+}
+
+.neumorphic-primary-button:hover {
+  background: linear-gradient(145deg, var(--color-primary-600), var(--color-primary-700)) !important;
+  box-shadow: 
+    2px 2px 4px rgba(14, 165, 233, 0.4),
+    -2px -2px 4px rgba(14, 165, 233, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+.neumorphic-primary-button:active {
+  background: linear-gradient(145deg, var(--color-primary-700), var(--color-primary-600)) !important;
+  box-shadow: 
+    inset 2px 2px 4px rgba(14, 165, 233, 0.3),
+    inset -2px -2px 4px rgba(14, 165, 233, 0.1) !important;
+  transform: translateY(0) !important;
+}
+
+.neumorphic-switch {
+  background: linear-gradient(145deg, #f0f0f0, #e6e6e6) !important;
+  border-radius: 20px !important;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 暗色主题下的拟态按钮 */
+[data-theme="dark"] .neumorphic-button {
+  background: linear-gradient(145deg, #2d3748, #1a2332) !important;
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.4),
+    -4px -4px 8px rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .neumorphic-button:hover {
+  background: linear-gradient(145deg, #374151, #1f2937) !important;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    -2px -2px 4px rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .neumorphic-button:active {
+  background: linear-gradient(145deg, #1f2937, #374151) !important;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.03) !important;
+}
+
+[data-theme="dark"] .neumorphic-switch {
+  background: linear-gradient(145deg, #2d3748, #1a2332) !important;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* 深色模式下的卡片操作区域 */
+[data-theme="dark"] .neumorphic-card .ant-card-actions {
+  background: transparent !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 8px 12px !important;
+  gap: 8px !important;
+}
+
+[data-theme="dark"] .neumorphic-card .ant-card-actions > li {
+  border-right: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+[data-theme="dark"] .neumorphic-card .ant-card-actions > li:last-child {
+  border-right: none !important;
+}
+
+/* 浅色模式下的卡片操作区域 */
+.neumorphic-card .ant-card-actions {
+  background: transparent !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+  padding: 8px 12px !important;
+  gap: 8px !important;
+}
+
+.neumorphic-card .ant-card-actions > li {
+  border-right: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

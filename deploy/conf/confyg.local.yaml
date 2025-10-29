@@ -1,0 +1,31 @@
+server:
+  port: 8080
+  env: development
+  readTimeout: 5s
+  writeTimeout: 10s
+  cors:
+    allowOrigins: ["*"]
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allowHeaders: ["Authorization", "Content-Type"]
+    allowCredentials: true
+
+log:
+  level: info
+  json: false
+
+jwt:
+  secret: "change_me_jwt"
+  accessTTL: 15m
+  refreshTTL: 168h
+
+database:
+  driver: mysql
+  dsn: "root:123456@tcp(127.0.0.1:3306)/appdb?parseTime=true&charset=utf8mb4&loc=Local"
+  maxOpenConns: 50
+  maxIdleConns: 10
+  connMaxLifetime: 60m
+
+security:
+  rateLimit:
+    enabled: true
+    rps: 20
