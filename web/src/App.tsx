@@ -25,6 +25,9 @@ import {
   ThunderboltOutlined,
   SearchOutlined
 } from '@ant-design/icons'
+import TopBanner from './components/layout/TopBanner'
+import Sidebar from './components/layout/Sidebar'
+import TopHeader from './components/layout/TopHeader'
 // 导入页面组件
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -158,276 +161,27 @@ export default function App() {
         color: 'var(--color-text-primary)'
       }}
     >
-      {/* ===== 顶部广告横幅 ===== */}
-      <div style={{
-        background: 'linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-500) 100%)',
-        color: 'white',
-        padding: '10px 24px',
-        textAlign: 'center',
-        fontSize: '15px',
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        boxShadow: 'var(--shadow-sm)',
-        fontWeight: 500,
-        letterSpacing: '0.3px'
-      }}>
-        <Text style={{ 
-          color: 'white',
-          textShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.3)',
-          fontWeight: 600,
-          letterSpacing: '0.3px',
-          display: 'inline-block'
-        }}>
-          🎉 新用户注册即送 100 积分，限时优惠进行中！
-        </Text>
-        <Button 
-          type="text" 
-          size="small" 
-          style={{ 
-            position: 'absolute', 
-            right: '24px', 
-            top: '50%', 
-            transform: 'translateY(-50%)',
-            color: 'white',
-            opacity: 0.8,
-            transition: 'opacity 0.2s'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
-        >
-          ✕
-        </Button>
-      </div>
+      <TopBanner />
 
       {/* ===== 主布局 ===== */}
       <Layout>
         {/* ===== 左侧功能栏（可收拉抽屉，默认折叠显示图标） ===== */}
-        <Sider
-          width={240}
-          collapsedWidth={64}
-          collapsed={sidebarCollapsed}
-          collapsible
-          trigger={null}
-          style={{
-            background: isDarkMode ? 'var(--color-bg-secondary)' : 'var(--color-bg-primary)',
-            borderRight: isDarkMode ? 'none' : `1px solid var(--color-border-primary)`,
-            position: 'fixed',
-            height: '100vh',
-            left: 0,
-            top: 0,
-            zIndex: 98,
-            overflow: 'hidden',
-            transition: 'width 0.2s ease',
-            boxShadow: isDarkMode ? 'none' : 'var(--shadow-sm)'
-          }}
-        >
-          {/* 侧边栏头部 */}
-          <div style={{ 
-            padding: sidebarCollapsed ? '16px 8px' : '16px',
-            borderBottom: isDarkMode ? '1px solid rgba(255, 255, 255, 0.04)' : `1px solid var(--color-border-primary)`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: sidebarCollapsed ? 'center' : 'space-between',
-            minHeight: '48px',
-            marginTop: '40px' // 为横幅留出空间
-          }}>
-            {!sidebarCollapsed && (
-              <Title level={4} style={{ 
-                margin: 0, 
-                color: 'var(--color-text-primary)',
-                fontSize: '18px',
-                fontWeight: 700,
-                background: 'linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-500) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>
-                代码市场
-              </Title>
-            )}
-            <Button
-              type="text"
-              icon={<MenuOutlined />}
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              style={{
-                width: sidebarCollapsed ? '100%' : 'auto',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--color-text-primary)',
-                fontSize: '16px'
-              }}
-            />
-          </div>
-
-          {/* 功能菜单 */}
-          <Menu
-            mode="inline"
-            items={sideMenuItems}
-            inlineCollapsed={sidebarCollapsed}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              marginTop: '8px',
-              height: 'calc(100% - 140px)', // 预留头部和底部空间
-              overflowY: 'auto',
-              overflowX: 'hidden'
-            }}
-            theme={isDarkMode ? 'dark' : 'light'}
-            selectedKeys={[]} // 可以根据路由动态设置选中项
-          />
-
-          {/* 底部用户操作 */}
-          <div style={{ 
-            position: 'absolute', 
-            bottom: '16px', 
-            left: sidebarCollapsed ? '8px' : '16px',
-            right: sidebarCollapsed ? '8px' : '16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            borderTop: isDarkMode ? '1px solid rgba(255, 255, 255, 0.04)' : `1px solid var(--color-border-primary)`,
-            paddingTop: '8px'
-          }}>
-            <Button 
-              type="text" 
-              icon={<HeartOutlined />}
-              style={{ 
-                textAlign: sidebarCollapsed ? 'center' : 'left',
-                color: isDarkMode ? '#fff' : '#000',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-                padding: sidebarCollapsed ? '8px' : '8px 12px',
-                height: '36px',
-                width: '100%'
-              }}
-              title={sidebarCollapsed ? '我的收藏' : ''}
-            >
-              {!sidebarCollapsed && '我的收藏'}
-            </Button>
-            <Button 
-              type="text" 
-              icon={<StarOutlined />}
-              style={{ 
-                textAlign: sidebarCollapsed ? 'center' : 'left',
-                color: isDarkMode ? '#fff' : '#000',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-                padding: sidebarCollapsed ? '8px' : '8px 12px',
-                height: '36px',
-                width: '100%'
-              }}
-              title={sidebarCollapsed ? '我的作品' : ''}
-            >
-              {!sidebarCollapsed && '我的作品'}
-            </Button>
-            <Button 
-              type="text" 
-              icon={<SettingOutlined />}
-              style={{ 
-                textAlign: sidebarCollapsed ? 'center' : 'left',
-                color: isDarkMode ? '#fff' : '#000',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-                padding: sidebarCollapsed ? '8px' : '8px 12px',
-                height: '36px',
-                width: '100%'
-              }}
-              title={sidebarCollapsed ? '设置' : ''}
-            >
-              {!sidebarCollapsed && '设置'}
-            </Button>
-          </div>
-        </Sider>
+        <Sidebar 
+          isDarkMode={isDarkMode}
+          sidebarCollapsed={sidebarCollapsed}
+          setSidebarCollapsed={setSidebarCollapsed}
+          sideMenuItems={sideMenuItems}
+        />
 
         {/* ===== 主内容区域 ===== */}
         <Layout style={{ marginLeft: sidebarCollapsed ? 64 : 240, transition: 'margin-left 0.2s ease' }}>
           {/* ===== 顶部导航栏 ===== */}
-          <Header style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'space-between',
-            background: isDarkMode ? 'var(--color-bg-secondary)' : 'var(--color-bg-primary)',
-            boxShadow: 'var(--shadow-sm)',
-            padding: '0 24px',
-            position: 'sticky',
-            top: '40px',
-            zIndex: 99
-          }}>
-            {/* 左侧：移动端菜单 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <Button
-                type="text"
-                icon={<MenuOutlined />}
-                onClick={() => setMobileMenuVisible(true)}
-                style={{ display: 'none' }} // 在移动端显示
-                className="mobile-menu-btn"
-              />
-            </div>
-            
-            {/* 中间：搜索框 */}
-            <div style={{ 
-              flex: 1, 
-              maxWidth: '600px', 
-              margin: '0 0 0 24px',
-              position: 'relative'
-            }}>
-              <div className="neumorphic-search-container">
-                <Input
-                  placeholder="搜索代码、标签、作者..."
-                  size="large"
-                  className="neumorphic-search-input"
-                />
-                <Button
-                  type="text"
-                  icon={<SearchOutlined />}
-                  className="neumorphic-search-button"
-                />
-              </div>
-            </div>
-            
-            {/* 右侧：功能按钮 */}
-            <Space>
-              {/* 夜间模式切换 */}
-              <Switch
-                checked={isDarkMode}
-                onChange={toggleDarkMode}
-                checkedChildren={<MoonOutlined />}
-                unCheckedChildren={<BulbOutlined />}
-                className="neumorphic-switch"
-              />
-
-              {/* 购物车 */}
-              <Badge count={3} size="small">
-                <Button 
-                  type="text" 
-                  icon={<ShoppingCartOutlined />} 
-                  className="neumorphic-button"
-                />
-              </Badge>
-
-              {/* 用户头像 */}
-              <Button 
-                type="text" 
-                icon={<UserOutlined />} 
-                className="neumorphic-button"
-              />
-
-              {/* API 测试按钮 */}
-              <Button 
-                type="primary" 
-                icon={<ApiOutlined />}
-                onClick={ping}
-                className="neumorphic-primary-button"
-              >
-                测试 API
-              </Button>
-            </Space>
-          </Header>
+          <TopHeader 
+            isDarkMode={isDarkMode}
+            toggleDarkMode={toggleDarkMode}
+            onOpenMobileMenu={() => setMobileMenuVisible(true)}
+            onPing={ping}
+          />
           
           {/* ===== 主要内容区域 ===== */}
           <Content style={{ 
