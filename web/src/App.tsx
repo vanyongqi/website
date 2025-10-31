@@ -1,13 +1,18 @@
 // ===== 主应用组件 =====
 // 这是整个应用的主要组件，负责布局和路由管理
 
-// 导入 React hooks
+// 使用状态 导入 React hooks 管理组件内部状态（如暗黑模式开关）。
 import { useState } from 'react'
 // 导入 React Router 的路由相关组件
+// Routes/Route 定义路径到页面组件的映射
+// Link 渲染可点击的路由链接
 import { Link, Route, Routes } from 'react-router-dom'
 // 导入 Ant Design 的布局和 UI 组件
+// Layout/ Menu/ Button/ Switch/ Drawer/ Badge/ Input 等就是现成的 UI 积木
+// Typography 包含 Title、Text 文本组件
+// message 用来弹出全局提示
 import { Layout, Menu, Button, Space, Typography, message, Switch, Drawer, Badge, Input } from 'antd'
-// 导入 Ant Design 的图标
+// 导入 Ant Design 的图标 Ant Design 的图标组件（小房子、月亮、购物车等）
 import { 
   HomeOutlined, 
   LoginOutlined, 
@@ -28,13 +33,13 @@ import {
 import TopBanner from './components/layout/TopBanner'
 import Sidebar from './components/layout/Sidebar'
 import TopHeader from './components/layout/TopHeader'
-// 导入页面组件
+// 导入页面组件 导入页面组件，用在路由里 
 import Home from './pages/Home'
 import Login from './pages/Login'
 
-// 从 Layout 组件中解构出 Header、Content、Sider
+// 从 Layout 组件中解构出 Header、Content、Sider 
 const { Header, Content, Sider } = Layout
-// 从 Typography 组件中解构出 Title
+// 从 Typography 组件中解构出 Title ,从组件库对象里解构出子组件，写起来更简洁
 const { Title, Text } = Typography
 
 /**
@@ -79,21 +84,6 @@ export default function App() {
     }
   }
 
-  /**
-   * 顶部导航菜单配置
-   */
-  const topMenuItems = [
-    {
-      key: '/',
-      icon: <HomeOutlined />,
-      label: <Link to="/">首页</Link>,
-    },
-    {
-      key: '/login',
-      icon: <LoginOutlined />,
-      label: <Link to="/login">登录</Link>,
-    },
-  ]
 
   /**
    * 左侧功能菜单配置
@@ -163,54 +153,69 @@ export default function App() {
     >
       <TopBanner />
 
-      {/* ===== 主布局 ===== */}
+      {/* === 整个页面的最外层布局，负责全站背景和主题色 === */}
       <Layout>
-        {/* ===== 左侧功能栏（可收拉抽屉，默认折叠显示图标） ===== */}
-        <Sidebar 
-          isDarkMode={isDarkMode}
-          sidebarCollapsed={sidebarCollapsed}
-          setSidebarCollapsed={setSidebarCollapsed}
-          sideMenuItems={sideMenuItems}
-        />
-
-        {/* ===== 主内容区域 ===== */}
-        <Layout style={{ marginLeft: sidebarCollapsed ? 64 : 240, transition: 'margin-left 0.2s ease' }}>
-          {/* ===== 顶部导航栏 ===== */}
-          <TopHeader 
-            isDarkMode={isDarkMode}
-            toggleDarkMode={toggleDarkMode}
-            onOpenMobileMenu={() => setMobileMenuVisible(true)}
-            onPing={ping}
+        {/* ===== 主布局：分为左侧功能栏和右侧主区域 ===== */}
+        <Layout>
+          {/* ===== 左侧功能栏。Sidebar 是左导航栏的积木组件，参数是全局暗黑/折叠菜单/菜单数据等 ===== */}
+          <Sidebar 
+            isDarkMode={isDarkMode}              // 是否处于暗黑模式
+            sidebarCollapsed={sidebarCollapsed}  // 侧边栏是否折叠收起
+            setSidebarCollapsed={setSidebarCollapsed} // 切折叠的函数
+            sideMenuItems={sideMenuItems}        // 菜单项数组，定义侧边栏所有菜单
           />
-          
-          {/* ===== 主要内容区域 ===== */}
-          <Content style={{ 
-            padding: '24px', 
-            background: isDarkMode ? 'var(--color-bg-primary)' : 'var(--color-bg-tertiary)',
-            minHeight: 'calc(100vh - 64px)'
-          }}>
-            <Routes>
-              <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-          </Content>
-        </Layout>
-      </Layout>
 
-      {/* ===== 移动端抽屉菜单 ===== */}
-      <Drawer
-        title="功能菜单"
-        placement="left"
-        onClose={() => setMobileMenuVisible(false)}
-        open={mobileMenuVisible}
-        width={280}
-      >
-        <Menu
-          mode="inline"
-          items={sideMenuItems}
-          style={{ border: 'none' }}
-        />
-      </Drawer>
+          {/* ===== 主内容区域。用内层 Layout 控制右区（marginLeft让右区挤开左栏），附带平滑动画 ===== */}
+          <Layout style={{ marginLeft: sidebarCollapsed ? 64 : 240, transition: 'margin-left 0.2s ease' }}>
+            {/* ===== 顶部导航栏（TopHeader），放右区顶部。下面 props 可以控制主题、移动菜单、测试API等功能 ===== */}
+            <TopHeader 
+              isDarkMode={isDarkMode} // 是否暗黑，用于切换按钮风格
+              toggleDarkMode={toggleDarkMode} // 切换主题
+              onOpenMobileMenu={() => setMobileMenuVisible(true)} // 手机端菜单开关
+              onPing={ping} // API 测试按钮
+            />
+
+            {/* ===== 主要内容区域（Content），所有页面的主内容会由路由展示在这里 ===== */}
+            <Content 
+              style={{ 
+                padding: '24px', // 内边距，内容离外框距离，防止内容贴边
+                background: isDarkMode ? 'var(--color-bg-primary)' : 'var(--color-bg-tertiary)', // 根据主题切换背景色
+                minHeight: 'calc(100vh - 64px)' // 最小高度=一屏高度-顶部横幅，页面填满防止塌陷
+              }}
+            >
+              {/* 路由切换区，不同路径展示不同页面组件 */}
+              <Routes>
+                <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </Content>
+          </Layout>
+        </Layout>
+
+        {/* ===== 移动端抽屉菜单，响应式时用 ===== */}
+        {/*
+          Drawer 是 Ant Design 的弹层组件，采用了 React 的 Portal 技术：
+          - 无论你在 JSX 里把 <Drawer /> 写在第几行，它实际渲染时会被插入到<body>底下，浮在页面最顶级层级，不是按顺序排列的。
+          - placement="left" 表示抽屉从左边滑出来，并完全覆盖在左侧（和"写在最后"没关系，是弹层默认效果）
+          - open={mobileMenuVisible} 控制抽屉是否显示（true 就弹出，false 就隐藏）
+          - onClose={() => setMobileMenuVisible(false)} 用来点空白处或关闭按钮时让抽屉隐藏
+          - 这种 Portal 弹层的设计让你的页面结构清晰，但弹层内容可以全局飘在最前面！
+        */}
+        <Drawer
+          title="功能菜单"
+          placement="left"
+          onClose={() => setMobileMenuVisible(false)} // 点击关闭按钮或蒙层时隐藏 Drawer
+          open={mobileMenuVisible} // 是否显示 Drawer，由 mobileMenuVisible 控制定
+          width={280} // 抽屉宽度
+        >
+          {/* Drawer 里的内容同 Sidebar 的菜单，方便移动端也能点功能 */}
+          <Menu
+            mode="inline"
+            items={sideMenuItems}
+            style={{ border: 'none' }}
+          />
+        </Drawer>
+      </Layout>
     </Layout>
   )
 }
