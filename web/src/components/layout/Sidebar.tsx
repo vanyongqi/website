@@ -85,21 +85,31 @@ const categoryItems = [
 
 interface SidebarProps {
   isMobile?: boolean
+  topOffset?: string
 }
 
-export default function Sidebar({ isMobile = false }: SidebarProps) {
+export default function Sidebar({ isMobile = false, topOffset = '2.5rem' }: SidebarProps) {
   const { isExpanded, setIsExpanded } = useSidebar()
   const [isMoreOpen, setIsMoreOpen] = useState(false)
   const location = useLocation()
   
   const sidebarWidth = isExpanded ? "w-56" : "w-20"
+  // 当 topOffset 为 0 时，高度应该是 100vh；否则减去 topOffset
+  const heightCalc = topOffset === '0' ? '100vh' : `calc(100vh - ${topOffset})`
+  
   const sidebarClasses = isMobile 
     ? `h-full ${sidebarWidth} flex flex-col transition-all duration-300`
-    : `fixed left-0 top-[2.5rem] h-[calc(100vh-2.5rem)] ${sidebarWidth} border-r bg-gradient-to-b from-slate-900 via-purple-900/20 to-slate-900 z-40 flex flex-col transition-all duration-300 shadow-2xl`
+    : `fixed left-0 ${sidebarWidth} border-r bg-gradient-to-b from-slate-900 via-purple-900/20 to-slate-900 z-40 flex flex-col transition-all duration-300 shadow-2xl`
 
   return (
     <>
-      <aside className={sidebarClasses}>
+      <aside 
+        className={sidebarClasses}
+        style={!isMobile ? {
+          top: topOffset,
+          height: heightCalc
+        } : {}}
+      >
         {/* Logo 区域 */}
         <div className="flex items-center justify-center px-4 border-b border-purple-500/20" style={{ height: '4rem' }}>
           {isExpanded ? (

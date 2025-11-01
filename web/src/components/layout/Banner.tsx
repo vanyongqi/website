@@ -1,10 +1,12 @@
 import { X, Sparkles } from "lucide-react"
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
-export default function Banner() {
-  const [isVisible, setIsVisible] = useState(true)
+interface BannerProps {
+  isVisible: boolean
+  onClose: () => void
+}
 
+export default function Banner({ isVisible, onClose }: BannerProps) {
   if (!isVisible) return null
 
   return (
@@ -20,7 +22,7 @@ export default function Banner() {
           variant="ghost"
           size="sm"
           className="absolute right-4 h-6 w-6 p-0 text-white hover:text-white hover:bg-white/20"
-          onClick={() => setIsVisible(false)}
+          onClick={onClose}
         >
           <X className="h-4 w-4" />
         </Button>

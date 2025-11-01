@@ -4,7 +4,11 @@ import { ShoppingCart, Bell, Menu, Search } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import Sidebar from "./Sidebar"
 
-export default function Header() {
+interface HeaderProps {
+  topOffset?: string
+}
+
+export default function Header({ topOffset = '2.5rem' }: HeaderProps) {
   return (
     <>
       {/* 移动端侧边栏按钮 */}
@@ -35,7 +39,7 @@ export default function Header() {
       </header>
 
       {/* 桌面端顶部栏（简化版，主要显示操作按钮） */}
-      <header className="hidden lg:block sticky top-[2.5rem] z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" style={{ height: '4rem' }}>
+      <header className="hidden lg:block sticky z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300" style={{ top: topOffset, height: '4rem' }}>
         <div className="flex items-center gap-4 px-6 h-full">
           {/* 搜索框 */}
           <div className="flex-1 max-w-md mx-auto">
