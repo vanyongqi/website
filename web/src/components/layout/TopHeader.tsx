@@ -1,7 +1,8 @@
-import { Layout, Button, Space, Switch, Badge, Input } from 'antd'
-import { MenuOutlined, MoonOutlined, BulbOutlined, ShoppingCartOutlined, UserOutlined, ApiOutlined, SearchOutlined } from '@ant-design/icons'
-
-const { Header } = Layout
+import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Menu, Moon, Sun, ShoppingCart, User, Server, Search } from 'lucide-react'
 
 type TopHeaderProps = {
   isDarkMode: boolean
@@ -12,80 +13,47 @@ type TopHeaderProps = {
 
 export function TopHeader({ isDarkMode, toggleDarkMode, onOpenMobileMenu, onPing }: TopHeaderProps) {
   return (
-    <Header style={{ 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'space-between',
-      background: isDarkMode ? 'var(--color-bg-secondary)' : 'var(--color-bg-primary)',
-      boxShadow: 'var(--shadow-sm)',
-      padding: '0 24px',
-      position: 'sticky',
-      top: '40px',
-      zIndex: 99
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <Button
-          type="text"
-          icon={<MenuOutlined />}
-          onClick={onOpenMobileMenu}
-          style={{ display: 'none' }}
-          className="mobile-menu-btn"
-        />
-      </div>
+    <div className="sticky top-0 z-[99] bg-background/95 backdrop-blur-sm border-b">
+      <div className="max-w-[1400px] mx-auto px-6 h-14 flex items-center justify-between">
+        {/* Logo/Brand */}
+        <div className="flex items-center gap-6">
+          <div className="text-lg font-bold bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">
+            代码市场
+          </div>
+        </div>
 
-      <div style={{ 
-        flex: 1, 
-        maxWidth: '600px', 
-        margin: '0 0 0 24px',
-        position: 'relative'
-      }}>
-        <div className="neumorphic-search-container">
-          <Input
-            placeholder="搜索代码、标签、作者..."
-            size="large"
-            className="neumorphic-search-input"
-          />
-          <Button
-            type="text"
-            icon={<SearchOutlined />}
-            className="neumorphic-search-button"
-          />
+        {/* Search */}
+        <div className="flex-1 max-w-[500px] mx-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input 
+              placeholder="搜索代码、标签、作者..." 
+              className="pl-10 h-9 bg-muted/50 border-0 focus-visible:ring-1" 
+            />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" className="h-9">
+            <Sun className="w-4 h-4 mr-1.5" />
+            <span className="text-sm">主题</span>
+          </Button>
+          <div className="relative">
+            <Button variant="ghost" size="icon" className="h-9 w-9">
+              <ShoppingCart className="w-4 h-4" />
+            </Button>
+            <span className="absolute -top-1 -right-1 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">3</span>
+          </div>
+          <Button variant="ghost" size="icon" className="h-9 w-9">
+            <User className="w-4 h-4" />
+          </Button>
+          <Button className="h-9 ml-2" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+            <span className="text-sm text-white">发布代码</span>
+          </Button>
         </div>
       </div>
-
-      <Space>
-        <Switch
-          checked={isDarkMode}
-          onChange={toggleDarkMode}
-          checkedChildren={<MoonOutlined />}
-          unCheckedChildren={<BulbOutlined />}
-          className="neumorphic-switch"
-        />
-
-        <Badge count={3} size="small">
-          <Button 
-            type="text" 
-            icon={<ShoppingCartOutlined />} 
-            className="neumorphic-button"
-          />
-        </Badge>
-
-        <Button 
-          type="text" 
-          icon={<UserOutlined />} 
-          className="neumorphic-button"
-        />
-
-        <Button 
-          type="primary" 
-          icon={<ApiOutlined />}
-          onClick={onPing}
-          className="neumorphic-primary-button"
-        >
-          测试 API
-        </Button>
-      </Space>
-    </Header>
+    </div>
   )
 }
 

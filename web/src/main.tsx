@@ -7,10 +7,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 // 导入 React Router 的浏览器路由组件
 import { BrowserRouter } from 'react-router-dom'
-// 导入 Ant Design 的全局样式（必须放在最前面）
-import 'antd/dist/reset.css'
 // 导入自定义主题样式
 import './styles/theme.css'
+// 导入 Tailwind 全局样式
+import './index.css'
+// 导入 shadcn/sonner 的全局通知容器
+import { Toaster } from '@/components/ui/sonner'
 // 导入我们的主应用组件
 import App from './App'
 
@@ -27,6 +29,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       {/* App: 我们的主应用组件，包含所有页面和功能 */}
       <App />
+      {/* 全局通知容器 */}
+      <Toaster />
     </BrowserRouter>
   </React.StrictMode>
 )

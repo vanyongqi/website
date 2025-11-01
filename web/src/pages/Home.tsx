@@ -3,17 +3,18 @@
 
 // 导入 React hooks
 import { useState } from 'react'
-// 导入 Ant Design 的组件
-import { Card, Input, Tag, Avatar, Typography, Space, Button } from 'antd'
-// 导入 Ant Design 的图标
-import { HeartOutlined, EyeOutlined, DownloadOutlined, SearchOutlined, CodeOutlined } from '@ant-design/icons'
+// 导入 shadcn/ui 组件
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+// 导入 lucide-react 图标
+import { Heart, Eye, Download, Search, Code } from 'lucide-react'
 // 导入瀑布流布局组件
 import Masonry from 'react-masonry-css'
 // 导入样式
 import './Home.css'
-
-const { Title, Text } = Typography
-const { Search } = Input
 
 /**
  * 首页组件 - 瀑布流布局
@@ -200,333 +201,98 @@ export default function Home({ isDarkMode = false }: HomeProps) {
     1600: 4, // 大屏幕4列
     1200: 3, // 中等屏幕3列
     768: 2, // 平板2列
-    576: 1, // 手机1列
+    500: 1, // 手机1列
   }
 
-  // 返回 JSX
+  // 返回 JSX（shadcn/ui + Tailwind）
+  // 组合过滤：标题或标签或作者任一命中
+  const filtered = codeItems.filter((item) => {
+    if (!searchValue) return true;
+    const v = searchValue.toLowerCase();
+    return (
+      item.title.toLowerCase().includes(v) ||
+      item.author.toLowerCase().includes(v) ||
+      item.tags.some((t: string) => t.toLowerCase().includes(v))
+    );
+  });
+
   return (
-    <div className={isDarkMode ? 'dark-mode' : ''} style={{ 
-      padding: '0 24px', 
-      maxWidth: '1800px', 
-      margin: '0 auto', 
-      paddingTop: '24px',
-      background: 'transparent',
-      minHeight: '100vh'
-    }}>
-      {/* ===== 筛选标签栏 ===== */}
-      <div style={{ 
-        marginBottom: '24px', 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: '12px',
-        flexWrap: 'wrap'
-      }}>
-        <Text strong style={{ color: 'var(--color-text-primary)' }}>筛选：</Text>
-        {['全部', 'React', 'Vue', 'Node.js', 'Python', '移动端', 'UI组件'].map(tag => (
-          <Button 
-            key={tag}
-            type={searchValue === tag ? 'primary' : 'default'}
-            size="small"
-            onClick={() => setSearchValue(tag)}
-            style={{ 
-              borderRadius: '16px',
-              background: searchValue === tag ? 'var(--color-primary-500)' : 'var(--color-bg-elevated)',
-              borderColor: searchValue === tag ? 'var(--color-primary-500)' : 'var(--color-border-secondary)',
-              color: searchValue === tag ? 'white' : 'var(--color-text-primary)',
-              boxShadow: searchValue === tag ? 'var(--shadow-sm)' : 'none'
-            }}
-          >
-            {tag}
-          </Button>
-        ))}
+    <div className="max-w-[1200px] mx-auto">
+      {/* 筛选与发布 */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center flex-wrap gap-3">
+          <span className="text-sm text-foreground/80">筛选：</span>
+          {['全部','React','Vue','Node.js','Python','移动端','UI组件'].map(tag => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => setSearchValue(tag === '全部' ? '' : tag)}
+              className={'chip ' + (searchValue === tag ? 'chip-active' : '')}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+        <Button className="h-10">
+          <Code className="w-4 h-4 mr-2" /> 发布代码
+        </Button>
       </div>
 
-      {/* ===== 瀑布流代码展示区域 ===== */}
+      {/* 瀑布流布局 */}
       <Masonry
-        breakpointCols={breakpointColumnsObj}
+        breakpointCols={{ default: 4, 1100: 3, 700: 2, 500: 1 }}
         className="masonry-grid"
         columnClassName="masonry-grid_column"
       >
-        {codeItems.map((item) => (
-          <Card
-            key={item.id}
-            hoverable
-            className="neumorphic-card"
-            style={{
-              background: isDarkMode 
-                ? 'linear-gradient(145deg, #2d3748, #1a2332)' 
-                : 'linear-gradient(145deg, #f8f9fa, #e9ecef)',
-              border: 'none',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              boxShadow: isDarkMode
-                ? '8px 8px 16px rgba(0, 0, 0, 0.6), -8px -8px 16px rgba(255, 255, 255, 0.08)'
-                : '8px 8px 16px rgba(0, 0, 0, 0.1), -8px -8px 16px rgba(255, 255, 255, 0.8)',
-              transition: 'all var(--transition-base)'
-            }}
-            cover={
-              <div
-                style={{
-                  height: `${item.height}px`,
-                  background: `linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-500) 100%)`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
-              >
-                {/* 背景视频 */}
+        {filtered.map((item) => (
+          <Card key={item.id} className="mb-4 neumo-card">
+            <CardHeader className="p-0">
+              <div className="relative cover-gradient rounded-md overflow-hidden" style={{ height: item.height }}>
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    zIndex: 1
-                  }}
+                  className="absolute inset-0 w-full h-full object-cover opacity-60"
                 >
                   <source src="https://liblibai-online.liblib.cloud/img/2509cd139f904e7a825c47e6ed687e62/afb8a7a7d29ce2bf0cba4fe5f477cf462b5dbffa2a3e5a841826705cdba993b6.mp4" type="video/mp4" />
                 </video>
-                
-                {/* 遮罩层 */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  background: 'rgba(0, 0, 0, 0.3)',
-                  zIndex: 2
-                }} />
-                
-                {/* 作者信息 - 左下角 */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: '12px',
-                  left: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  padding: '6px 12px',
-                  borderRadius: '20px',
-                  backdropFilter: 'blur(10px)',
-                  zIndex: 3
-                }}>
-                  <Avatar src={item.avatar} size="small" />
-                  <Text style={{ color: 'white', fontSize: '14px', fontWeight: 500 }}>
-                    {item.author}
-                  </Text>
+                <div className="cover-overlay"></div>
+                <div className="relative z-10 h-full w-full flex items-center justify-center text-white text-base font-semibold">
+                  预览：{item.title}
                 </div>
-
-                {/* 代码预览图标 - 右上角 */}
-                <div style={{
-                  position: 'absolute',
-                  top: '12px',
-                  right: '12px',
-                  background: 'rgba(255,255,255,0.2)',
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  backdropFilter: 'blur(10px)',
-                  zIndex: 3
-                }}>
-                  <CodeOutlined />
-                </div>
-                
-                {/* 作品标题 - 居中 */}
-                <div style={{
-                  position: 'relative',
-                  zIndex: 3,
-                  textAlign: 'center',
-                  background: 'rgba(0, 0, 0, 0.5)',
-                  padding: '12px 20px',
-                  borderRadius: '8px',
-                  backdropFilter: 'blur(10px)'
-                }}>
-                  {item.title}
+                <div className="relative z-10 absolute bottom-0 inset-x-0 p-2 flex items-center justify-between text-white text-xs">
+                  <span className="opacity-90">￥{item.price}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex items-center gap-1"><Eye className="w-4 h-4 icon-muted icon-hover" /> {item.views}</span>
+                    <span className="inline-flex items-center gap-1"><Heart className="w-4 h-4 icon-muted icon-hover" /> {item.likes}</span>
+                  </div>
                 </div>
               </div>
-            }
-            actions={[
-              <div key="views" style={{ 
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.85)' : 'var(--color-text-secondary)',
-                background: isDarkMode 
-                  ? 'linear-gradient(145deg, #374151, #283548)' 
-                  : 'linear-gradient(145deg, #f1f3f4, #e8eaed)',
-                padding: '6px 8px',
-                borderRadius: '8px',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '4px',
-                cursor: 'pointer',
-                border: 'none',
-                boxShadow: isDarkMode
-                  ? 'inset 2px 2px 4px rgba(0, 0, 0, 0.3), inset -2px -2px 4px rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0, 0, 0, 0.2)'
-                  : 'inset 2px 2px 4px rgba(0, 0, 0, 0.1), inset -2px -2px 4px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.05)',
-                flex: 1,
-                minHeight: '28px'
-              }}>
-                <EyeOutlined style={{ fontSize: '12px' }} />
-                <span style={{ fontSize: '12px', fontWeight: 500 }}>{item.views}</span>
-              </div>,
-              <div key="likes" style={{ 
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.85)' : 'var(--color-text-secondary)',
-                background: isDarkMode 
-                  ? 'linear-gradient(145deg, #374151, #283548)' 
-                  : 'linear-gradient(145deg, #f1f3f4, #e8eaed)',
-                padding: '6px 8px',
-                borderRadius: '8px',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '4px',
-                cursor: 'pointer',
-                border: 'none',
-                boxShadow: isDarkMode
-                  ? 'inset 2px 2px 4px rgba(0, 0, 0, 0.3), inset -2px -2px 4px rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0, 0, 0, 0.2)'
-                  : 'inset 2px 2px 4px rgba(0, 0, 0, 0.1), inset -2px -2px 4px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.05)',
-                flex: 1,
-                minHeight: '28px'
-              }}>
-                <HeartOutlined style={{ fontSize: '12px' }} />
-                <span style={{ fontSize: '12px', fontWeight: 500 }}>{item.likes}</span>
-              </div>,
-              <div key="download" style={{ 
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.85)' : 'var(--color-text-secondary)',
-                background: isDarkMode 
-                  ? 'linear-gradient(145deg, #374151, #283548)' 
-                  : 'linear-gradient(145deg, #f1f3f4, #e8eaed)',
-                padding: '6px 8px',
-                borderRadius: '8px',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '4px',
-                cursor: 'pointer',
-                border: 'none',
-                boxShadow: isDarkMode
-                  ? 'inset 2px 2px 4px rgba(0, 0, 0, 0.3), inset -2px -2px 4px rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0, 0, 0, 0.2)'
-                  : 'inset 2px 2px 4px rgba(0, 0, 0, 0.1), inset -2px -2px 4px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.05)',
-                flex: 1,
-                minHeight: '28px'
-              }}>
-                <DownloadOutlined style={{ fontSize: '12px' }} />
-                <span style={{ fontSize: '12px', fontWeight: 500 }}>下载</span>
-              </div>,
-            ]}
-          >
-            {/* 卡片标题和描述 */}
-            <Card.Meta
-              title={
-                <Title level={5} style={{ 
-                  marginBottom: '8px',
-                  color: 'var(--color-text-primary)'
-                }}>
-                  {item.title}
-                </Title>
-              }
-              description={
-                <Text style={{ 
-                  fontSize: '14px',
-                  color: 'var(--color-text-secondary)',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden'
-                }}>
-                  {item.description}
-                </Text>
-              }
-            />
-
-            {/* 标签区域 */}
-            <div style={{ marginTop: '12px', marginBottom: '12px' }}>
-              <Space wrap size={[0, 8]}>
-                {item.tags.map((tag) => (
-                  <Tag 
-                    key={tag} 
-                    color="blue"
-                    style={{
-                      background: isDarkMode 
-                        ? 'rgba(59, 130, 246, 0.2)' 
-                        : 'var(--color-primary-50)',
-                      borderColor: isDarkMode 
-                        ? 'rgba(59, 130, 246, 0.3)' 
-                        : 'var(--color-primary-200)',
-                      color: isDarkMode 
-                        ? 'rgba(147, 197, 253, 0.9)' 
-                        : 'var(--color-primary-600)'
-                    }}
-                  >
-                    {tag}
-                  </Tag>
+            </CardHeader>
+            <CardContent className="p-3">
+              <h3 className="text-base font-semibold mb-1.5 leading-tight">{item.title}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{item.description}</p>
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {item.tags.map((tag, idx) => (
+                  <span key={idx} className="chip text-xs">{tag}</span>
                 ))}
-              </Space>
-            </div>
-
-
-            {/* 价格和操作按钮 */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingTop: '12px',
-                borderTop: isDarkMode 
-                  ? '1px solid rgba(255, 255, 255, 0.1)' 
-                  : '1px solid rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <div>
-                <Text strong style={{ 
-                  fontSize: '20px', 
-                  color: 'var(--color-primary-500)',
-                  marginRight: '8px'
-                }}>
-                  ¥{item.price}
-                </Text>
-                <Text 
-                  type="secondary" 
-                  style={{ 
-                    fontSize: '12px',
-                    textDecoration: 'line-through',
-                    color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'var(--color-text-tertiary)'
-                  }}
-                >
-                  ¥{item.price + 10}
-                </Text>
               </div>
-              <Button 
-                type="primary" 
-                size="small"
-                className="neumorphic-buy-button"
-                style={{
-                  background: 'linear-gradient(145deg, var(--color-primary-500), var(--color-primary-600))',
-                  border: 'none',
-                  borderRadius: '8px',
-                  boxShadow: '4px 4px 8px rgba(14, 165, 233, 0.3), -4px -4px 8px rgba(14, 165, 233, 0.1)',
-                  color: 'white',
-                  fontWeight: 600
-                }}
-              >
+              <div className="flex items-center gap-2 mt-2.5">
+                <Avatar className="avatar-md">
+                  <AvatarImage src={item.avatar} />
+                  <AvatarFallback>{item.author.slice(0,1)}</AvatarFallback>
+                </Avatar>
+                <span className="text-sm">{item.author}</span>
+              </div>
+            </CardContent>
+            <CardFooter className="flex items-center justify-between px-3 py-2.5">
+              <span className="font-bold text-lg" style={{color: '#667eea'}}>￥{item.price}</span>
+              <button type="button" className="btn-buy text-sm">
+                <Download className="w-4 h-4" />
                 立即购买
-              </Button>
-            </div>
+              </button>
+            </CardFooter>
           </Card>
         ))}
       </Masonry>

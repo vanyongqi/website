@@ -1,8 +1,6 @@
-import { Layout, Typography, Button, Menu } from 'antd'
-import { MenuOutlined, HeartOutlined, StarOutlined, SettingOutlined } from '@ant-design/icons'
-
-const { Sider } = Layout
-const { Title } = Typography
+import { Menu as MenuIcon, Heart, Star, Settings } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 type SidebarProps = {
   isDarkMode: boolean
@@ -13,143 +11,56 @@ type SidebarProps = {
 
 export function Sidebar({ isDarkMode, sidebarCollapsed, setSidebarCollapsed, sideMenuItems }: SidebarProps) {
   return (
-    <Sider
-      width={240}
-      collapsedWidth={64}
-      collapsed={sidebarCollapsed}
-      collapsible
-      trigger={null}
-      style={{
-        background: isDarkMode ? 'var(--color-bg-secondary)' : 'var(--color-bg-primary)',
-        borderRight: isDarkMode ? 'none' : `1px solid var(--color-border-primary)`,
-        position: 'fixed',
-        height: '100vh',
-        left: 0,
-        top: 0,
-        zIndex: 98,
-        overflow: 'hidden',
-        transition: 'width 0.2s ease',
-        boxShadow: isDarkMode ? 'none' : 'var(--shadow-sm)'
-      }}
+    <aside
+      className={
+        sidebarCollapsed
+          ? 'w-16 fixed left-0 top-0 h-screen z-[98] overflow-hidden transition-[width] duration-200 bg-background border-r'
+          : 'w-60 fixed left-0 top-0 h-screen z-[98] overflow-hidden transition-[width] duration-200 bg-background border-r'
+      }
     >
-      <div style={{ 
-        padding: sidebarCollapsed ? '16px 8px' : '16px',
-        borderBottom: isDarkMode ? '1px solid rgba(255, 255, 255, 0.04)' : `1px solid var(--color-border-primary)`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: sidebarCollapsed ? 'center' : 'space-between',
-        minHeight: '48px',
-        marginTop: '40px'
-      }}>
+      <div className={`mt-10 flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'justify-between px-4'} h-12 border-b`}>
         {!sidebarCollapsed && (
-          <Title level={4} style={{ 
-            margin: 0, 
-            color: 'var(--color-text-primary)',
-            fontSize: '18px',
-            fontWeight: 700,
-            background: 'linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-500) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
+          <div className="m-0 text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             代码市场
-          </Title>
+          </div>
         )}
-        <Button
-          type="text"
-          icon={<MenuOutlined />}
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          style={{
-            width: sidebarCollapsed ? '100%' : 'auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-text-primary)',
-            fontSize: '16px'
-          }}
-        />
-      </div>
-
-      <Menu
-        mode="inline"
-        items={sideMenuItems}
-        inlineCollapsed={sidebarCollapsed}
-        style={{
-          border: 'none',
-          background: 'transparent',
-          marginTop: '8px',
-          height: 'calc(100% - 140px)',
-          overflowY: 'auto',
-          overflowX: 'hidden'
-        }}
-        theme={isDarkMode ? 'dark' : 'light'}
-        selectedKeys={[]}
-      />
-
-      <div style={{ 
-        position: 'absolute', 
-        bottom: '16px', 
-        left: sidebarCollapsed ? '8px' : '16px',
-        right: sidebarCollapsed ? '8px' : '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '4px',
-        borderTop: isDarkMode ? '1px solid rgba(255, 255, 255, 0.04)' : `1px solid var(--color-border-primary)`,
-        paddingTop: '8px'
-      }}>
-        <Button 
-          type="text" 
-          icon={<HeartOutlined />}
-          style={{ 
-            textAlign: sidebarCollapsed ? 'center' : 'left',
-            color: 'var(--color-text-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-            padding: sidebarCollapsed ? '8px' : '8px 12px',
-            height: '36px',
-            width: '100%'
-          }}
-          title={sidebarCollapsed ? '我的收藏' : ''}
-        >
-          {!sidebarCollapsed && '我的收藏'}
-        </Button>
-        <Button 
-          type="text" 
-          icon={<StarOutlined />}
-          style={{ 
-            textAlign: sidebarCollapsed ? 'center' : 'left',
-            color: 'var(--color-text-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-            padding: sidebarCollapsed ? '8px' : '8px 12px',
-            height: '36px',
-            width: '100%'
-          }}
-          title={sidebarCollapsed ? '我的作品' : ''}
-        >
-          {!sidebarCollapsed && '我的作品'}
-        </Button>
-        <Button 
-          type="text" 
-          icon={<SettingOutlined />}
-          style={{ 
-            textAlign: sidebarCollapsed ? 'center' : 'left',
-            color: 'var(--color-text-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-            padding: sidebarCollapsed ? '8px' : '8px 12px',
-            height: '36px',
-            width: '100%'
-          }}
-          title={sidebarCollapsed ? '设置' : ''}
-        >
-          {!sidebarCollapsed && '设置'}
+        <Button variant="ghost" size="icon" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
+          <MenuIcon className="w-5 h-5" />
         </Button>
       </div>
-    </Sider>
+
+      <nav className="mt-2 px-1 h-[calc(100%-140px)] overflow-y-auto overflow-x-hidden">
+        <ul className="space-y-1 list-none">
+          {sideMenuItems.map((item) => (
+            <li key={item.key}>
+              <Link
+                to={item.key === 'hot' ? '/' : `/${item.key}`}
+                className={`flex items-center rounded-md transition-all ${sidebarCollapsed ? 'justify-center w-full h-10' : 'gap-2 px-2 py-2'} hover:bg-accent`}
+                title={sidebarCollapsed ? item.label : ''}
+              >
+                <span className="shrink-0 flex items-center justify-center">{item.icon}</span>
+                {!sidebarCollapsed && <span className="truncate text-sm">{item.label}</span>}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div className={`absolute bottom-4 ${sidebarCollapsed ? 'left-2 right-2' : 'left-4 right-4'} flex flex-col gap-1 border-t pt-2`}>
+        <Button variant="ghost" className={`${sidebarCollapsed ? 'justify-center' : 'justify-start'} h-9 w-full`} title={sidebarCollapsed ? '我的收藏' : ''}>
+          <Heart className="w-4 h-4 icon-muted icon-hover" />
+          {!sidebarCollapsed && <span className="ml-2 text-sm">我的收藏</span>}
+        </Button>
+        <Button variant="ghost" className={`${sidebarCollapsed ? 'justify-center' : 'justify-start'} h-9 w-full`} title={sidebarCollapsed ? '我的作品' : ''}>
+          <Star className="w-4 h-4 icon-muted icon-hover" />
+          {!sidebarCollapsed && <span className="ml-2 text-sm">我的作品</span>}
+        </Button>
+        <Button variant="ghost" className={`${sidebarCollapsed ? 'justify-center' : 'justify-start'} h-9 w-full`} title={sidebarCollapsed ? '设置' : ''}>
+          <Settings className="w-4 h-4 icon-muted icon-hover" />
+          {!sidebarCollapsed && <span className="ml-2 text-sm">设置</span>}
+        </Button>
+      </div>
+    </aside>
   )
 }
 

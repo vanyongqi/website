@@ -20,7 +20,7 @@ jwt:
 
 database:
   driver: mysql
-  dsn: "app:change_me_app@tcp(mysql:3306)/appdb?parseTime=true&charset=utf8mb4&loc=Local"
+  dsn: "app:123456@tcp(mysql:3306)/appdb?parseTime=true&charset=utf8mb4&loc=Local"
   maxOpenConns: 50
   maxIdleConns: 10
   connMaxLifetime: 60m

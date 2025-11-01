@@ -7,40 +7,18 @@ import { useState } from 'react'
 // Routes/Route 定义路径到页面组件的映射
 // Link 渲染可点击的路由链接
 import { Link, Route, Routes } from 'react-router-dom'
-// 导入 Ant Design 的布局和 UI 组件
-// Layout/ Menu/ Button/ Switch/ Drawer/ Badge/ Input 等就是现成的 UI 积木
-// Typography 包含 Title、Text 文本组件
-// message 用来弹出全局提示
-import { Layout, Menu, Button, Space, Typography, message, Switch, Drawer, Badge, Input } from 'antd'
-// 导入 Ant Design 的图标 Ant Design 的图标组件（小房子、月亮、购物车等）
-import { 
-  HomeOutlined, 
-  LoginOutlined, 
-  ApiOutlined, 
-  MenuOutlined, 
-  BulbOutlined, 
-  MoonOutlined,
-  CodeOutlined,
-  ShoppingCartOutlined,
-  UserOutlined,
-  SettingOutlined,
-  HeartOutlined,
-  StarOutlined,
-  FireOutlined,
-  ThunderboltOutlined,
-  SearchOutlined
-} from '@ant-design/icons'
+// 全局通知改用 sonner
+import { toast } from 'sonner'
+// 抽屉用 shadcn Sheet
+import { Sheet, SheetContent } from '@/components/ui/sheet'
+// 使用 lucide-react 图标替代原 antd 图标
+import { Flame, Zap, Code } from 'lucide-react'
 import TopBanner from './components/layout/TopBanner'
 import Sidebar from './components/layout/Sidebar'
 import TopHeader from './components/layout/TopHeader'
 // 导入页面组件 导入页面组件，用在路由里 
 import Home from './pages/Home'
 import Login from './pages/Login'
-
-// 从 Layout 组件中解构出 Header、Content、Sider 
-const { Header, Content, Sider } = Layout
-// 从 Typography 组件中解构出 Title ,从组件库对象里解构出子组件，写起来更简洁
-const { Title, Text } = Typography
 
 /**
  * 主应用组件
@@ -64,9 +42,9 @@ export default function App() {
     try {
       const res = await fetch('/api/v1/ping')
       const data = await res.json()
-      message.success(`Ping: ${data.message}`)
+      toast(`Ping: ${data.message}`)
     } catch (e) {
-      message.error('Ping 失败')
+      toast('Ping 失败')
     }
   }
 
@@ -91,131 +69,109 @@ export default function App() {
   const sideMenuItems = [
     {
       key: 'hot',
-      icon: <FireOutlined />,
+      icon: <Flame className="w-4 h-4" />,
       label: '热门推荐',
     },
     {
       key: 'new',
-      icon: <ThunderboltOutlined />,
+      icon: <Zap className="w-4 h-4" />,
       label: '最新发布',
     },
     {
       key: 'react',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: 'React 组件',
     },
     {
       key: 'vue',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: 'Vue 组件',
     },
     {
       key: 'node',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: 'Node.js 工具',
     },
     {
       key: 'python',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: 'Python 脚本',
     },
     {
       key: 'mobile',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: '移动端开发',
     },
     {
       key: 'ui',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: 'UI 组件库',
     },
     {
       key: 'utils',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: '工具函数',
     },
     {
       key: 'templates',
-      icon: <CodeOutlined />,
+      icon: <Code className="w-4 h-4" />,
       label: '项目模板',
     },
   ]
 
   // 返回 JSX（应用的 UI 结构）
   return (
-    <Layout 
-      style={{ 
-        minHeight: '100vh', 
-        background: isDarkMode ? 'var(--color-bg-primary)' : 'var(--color-bg-secondary)',
-        fontFamily: 'var(--font-family-primary)',
-        color: 'var(--color-text-primary)'
-      }}
-    >
+    <div className="min-h-screen text-foreground bg-background">
       <TopBanner />
 
-      {/* === 整个页面的最外层布局，负责全站背景和主题色 === */}
-      <Layout>
-        {/* ===== 主布局：分为左侧功能栏和右侧主区域 ===== */}
-        <Layout>
-          {/* ===== 左侧功能栏。Sidebar 是左导航栏的积木组件，参数是全局暗黑/折叠菜单/菜单数据等 ===== */}
-          <Sidebar 
-            isDarkMode={isDarkMode}              // 是否处于暗黑模式
-            sidebarCollapsed={sidebarCollapsed}  // 侧边栏是否折叠收起
-            setSidebarCollapsed={setSidebarCollapsed} // 切折叠的函数
-            sideMenuItems={sideMenuItems}        // 菜单项数组，定义侧边栏所有菜单
+      {/* 主布局：左侧 Sidebar + 右侧主内容 */}
+      <div className="flex">
+        {/* 左侧功能栏 */}
+        <Sidebar 
+          isDarkMode={isDarkMode}
+          sidebarCollapsed={sidebarCollapsed}
+          setSidebarCollapsed={setSidebarCollapsed}
+          sideMenuItems={sideMenuItems}
+        />
+
+        {/* 右侧主区域，左侧宽度变化时用 margin-left 让出空间 */}
+        <div className={sidebarCollapsed ? 'ml-[64px] transition-[margin-left] duration-200 ease-linear flex-1' : 'ml-[240px] transition-[margin-left] duration-200 ease-linear flex-1'}>
+          {/* 顶部导航栏 */}
+          <TopHeader 
+            isDarkMode={isDarkMode}
+            toggleDarkMode={toggleDarkMode}
+            onOpenMobileMenu={() => setMobileMenuVisible(true)}
+            onPing={ping}
           />
 
-          {/* ===== 主内容区域。用内层 Layout 控制右区（marginLeft让右区挤开左栏），附带平滑动画 ===== */}
-          <Layout style={{ marginLeft: sidebarCollapsed ? 64 : 240, transition: 'margin-left 0.2s ease' }}>
-            {/* ===== 顶部导航栏（TopHeader），放右区顶部。下面 props 可以控制主题、移动菜单、测试API等功能 ===== */}
-            <TopHeader 
-              isDarkMode={isDarkMode} // 是否暗黑，用于切换按钮风格
-              toggleDarkMode={toggleDarkMode} // 切换主题
-              onOpenMobileMenu={() => setMobileMenuVisible(true)} // 手机端菜单开关
-              onPing={ping} // API 测试按钮
-            />
+          {/* 主要内容区域 */}
+          <div className="p-6 min-h-[calc(100vh-64px)] bg-background">
+            <Routes>
+              <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
 
-            {/* ===== 主要内容区域（Content），所有页面的主内容会由路由展示在这里 ===== */}
-            <Content 
-              style={{ 
-                padding: '24px', // 内边距，内容离外框距离，防止内容贴边
-                background: isDarkMode ? 'var(--color-bg-primary)' : 'var(--color-bg-tertiary)', // 根据主题切换背景色
-                minHeight: 'calc(100vh - 64px)' // 最小高度=一屏高度-顶部横幅，页面填满防止塌陷
-              }}
-            >
-              {/* 路由切换区，不同路径展示不同页面组件 */}
-              <Routes>
-                <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
-                <Route path="/login" element={<Login />} />
-              </Routes>
-            </Content>
-          </Layout>
-        </Layout>
-
-        {/* ===== 移动端抽屉菜单，响应式时用 ===== */}
-        {/*
-          Drawer 是 Ant Design 的弹层组件，采用了 React 的 Portal 技术：
-          - 无论你在 JSX 里把 <Drawer /> 写在第几行，它实际渲染时会被插入到<body>底下，浮在页面最顶级层级，不是按顺序排列的。
-          - placement="left" 表示抽屉从左边滑出来，并完全覆盖在左侧（和"写在最后"没关系，是弹层默认效果）
-          - open={mobileMenuVisible} 控制抽屉是否显示（true 就弹出，false 就隐藏）
-          - onClose={() => setMobileMenuVisible(false)} 用来点空白处或关闭按钮时让抽屉隐藏
-          - 这种 Portal 弹层的设计让你的页面结构清晰，但弹层内容可以全局飘在最前面！
-        */}
-        <Drawer
-          title="功能菜单"
-          placement="left"
-          onClose={() => setMobileMenuVisible(false)} // 点击关闭按钮或蒙层时隐藏 Drawer
-          open={mobileMenuVisible} // 是否显示 Drawer，由 mobileMenuVisible 控制定
-          width={280} // 抽屉宽度
-        >
-          {/* Drawer 里的内容同 Sidebar 的菜单，方便移动端也能点功能 */}
-          <Menu
-            mode="inline"
-            items={sideMenuItems}
-            style={{ border: 'none' }}
-          />
-        </Drawer>
-      </Layout>
-    </Layout>
+      {/* 移动端抽屉菜单（Sheet 实现） */}
+      <Sheet open={mobileMenuVisible} onOpenChange={setMobileMenuVisible}>
+        <SheetContent side="left" className="w-72 p-0">
+          <div className="p-4 font-semibold">功能菜单</div>
+          <nav className="px-2 pb-4">
+            <ul className="space-y-1">
+              {sideMenuItems.map((item) => (
+                <li key={item.key}>
+                  <Link to={item.key === 'hot' ? '/' : `/${item.key}`} className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-accent">
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </div>
   )
 }

@@ -8,4 +8,4 @@ log:
   json: false
 
 database:
-  dsn: "app:change_me_app@tcp(localhost:3306)/appdb?parseTime=true&charset=utf8mb4&loc=Local"
+  dsn: "app:123456@tcp(localhost:3306)/appdb?parseTime=true&charset=utf8mb4&loc=Local"
