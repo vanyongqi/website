@@ -1,301 +1,219 @@
-// ===== 首页组件 =====
-// 瀑布流布局的代码展示页面（类似 Pinterest/liblib.art）
+import CodeCard from "@/components/CodeCard"
+import { Code2, Server, Layers, Wrench, Smartphone, BarChart3 } from "lucide-react"
+import { Link } from "react-router-dom"
 
-// 导入 React hooks
-import { useState } from 'react'
-// 导入 shadcn/ui 组件
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-// 导入 lucide-react 图标
-import { Heart, Eye, Download, Search, Code } from 'lucide-react'
-// 导入瀑布流布局组件
-import Masonry from 'react-masonry-css'
-// 导入样式
-import './Home.css'
+export default function Home() {
+  // 生成代码项目数据
+  const generateCodes = () => {
+    const codes = []
+    const heights: ("short" | "medium" | "tall")[] = ["short", "medium", "tall"]
+    const languages = ["JavaScript", "TypeScript", "Python", "React", "Vue", "Next.js", "Java", "C++", "Go"]
+    const frameworks = ["React", "Vue", "Next.js", "Nuxt", "Express", "Django", "Flask", "Spring", null]
+    const tags = [
+      "UI组件", "管理系统", "电商平台", "数据可视化", "API", "工具库", 
+      "后台管理", "移动端", "小程序", "全栈", "前端框架", "后端服务"
+    ]
+    const authors = ["DeveloperA", "CodeMaster", "TechPro", "DevStudio", "CodeLab", "TechTeam", "DevHub", "CodeSpace"]
+    
+    // 使用代码相关的预览图
+    const previews = [
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400", // 代码
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400",
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400",
+      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400",
+      "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=400",
+      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400",
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400",
+    ]
 
-/**
- * 首页组件 - 瀑布流布局
- * 展示代码项目，使用瀑布流（Masonry）布局，类似 Pinterest 的风格
- */
-interface HomeProps {
-  isDarkMode?: boolean
-}
+    const projectTitles = [
+      "React 管理后台系统", "Vue 电商平台", "Next.js 博客系统", 
+      "数据可视化组件库", "Express API 框架", "Python 爬虫工具",
+      "移动端 UI 组件", "全栈开发模板", "小程序商城", "后台管理系统",
+      "实时聊天系统", "文件上传组件", "图表可视化库", "权限管理系统",
+      "支付集成SDK", "图片处理工具", "数据表格组件", "表单构建器",
+      "拖拽编辑器", "代码生成器"
+    ]
 
-export default function Home({ isDarkMode = false }: HomeProps) {
-  // 搜索关键词状态
-  const [searchValue, setSearchValue] = useState('')
-
-  /**
-   * 生成示例代码数据
-   * 每个代码项目有不同的高度，形成瀑布流效果
-   */
-  const codeItems = [
-    {
-      id: 1,
-      title: 'React 购物车组件',
-      description: '一个完整的 React 购物车组件，包含添加、删除、数量更新等功能。代码简洁易懂，适合学习使用。',
-      image: 'https://via.placeholder.com/300x200?text=React+Cart',
-      tags: ['React', 'TypeScript', '购物车'],
-      price: 29,
-      views: 1234,
-      likes: 89,
-      author: '张三',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-      height: 280, // 卡片高度（随机，模拟瀑布流）
-    },
-    {
-      id: 2,
-      title: 'Vue3 数据可视化',
-      description: '基于 Vue3 和 ECharts 的数据可视化组件，支持多种图表类型。',
-      image: 'https://via.placeholder.com/300x400?text=Vue3+Chart',
-      tags: ['Vue3', 'ECharts', '数据可视化'],
-      price: 39,
-      views: 2345,
-      likes: 156,
-      author: '李四',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane',
-      height: 380,
-    },
-    {
-      id: 3,
-      title: 'Node.js 文件上传',
-      description: '完整的 Node.js 文件上传解决方案，支持多文件上传、进度条、文件类型验证等功能。',
-      image: 'https://via.placeholder.com/300x250?text=Node+Upload',
-      tags: ['Node.js', 'Express', '文件上传'],
-      price: 35,
-      views: 3456,
-      likes: 234,
-      author: '王五',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bob',
-      height: 320,
-    },
-    {
-      id: 4,
-      title: 'Python 爬虫框架',
-      description: '一个简单易用的 Python 爬虫框架，支持多线程、代理池、数据存储等功能。帮助开发者快速构建爬虫项目。',
-      image: 'https://via.placeholder.com/300x350?text=Python+Crawler',
-      tags: ['Python', '爬虫', 'Scrapy'],
-      price: 49,
-      views: 4567,
-      likes: 345,
-      author: '赵六',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alice',
-      height: 400,
-    },
-    {
-      id: 5,
-      title: '微信小程序 UI 组件库',
-      description: '一套精美的微信小程序 UI 组件库，包含按钮、卡片、表单等常用组件。',
-      image: 'https://via.placeholder.com/300x180?text=WeChat+UI',
-      tags: ['微信小程序', 'UI组件', 'WeChat'],
-      price: 25,
-      views: 5678,
-      likes: 412,
-      author: '孙七',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie',
-      height: 260,
-    },
-    {
-      id: 6,
-      title: 'Go 微服务框架',
-      description: '基于 Go 语言的微服务框架，支持服务发现、负载均衡、熔断器等功能。高性能、易扩展。',
-      image: 'https://via.placeholder.com/300x300?text=Go+Microservice',
-      tags: ['Go', '微服务', 'Gin'],
-      price: 59,
-      views: 6789,
-      likes: 521,
-      author: '周八',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=David',
-      height: 360,
-    },
-    {
-      id: 7,
-      title: 'Flutter 动画库',
-      description: 'Flutter 动画组件库，提供丰富的动画效果，让应用更加生动有趣。',
-      image: 'https://via.placeholder.com/300x220?text=Flutter+Animation',
-      tags: ['Flutter', '动画', 'Dart'],
-      price: 32,
-      views: 7890,
-      likes: 678,
-      author: '吴九',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma',
-      height: 300,
-    },
-    {
-      id: 8,
-      title: 'React Native 导航',
-      description: 'React Native 导航解决方案，支持底部导航、侧边栏、路由跳转等功能。',
-      image: 'https://via.placeholder.com/300x280?text=RN+Navigation',
-      tags: ['React Native', '导航', '路由'],
-      price: 38,
-      views: 8901,
-      likes: 745,
-      author: '郑十',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Frank',
-      height: 340,
-    },
-    {
-      id: 9,
-      title: 'Docker 部署脚本',
-      description: '一键 Docker 部署脚本，支持多环境配置、自动构建、服务编排等功能。简化部署流程。',
-      image: 'https://via.placeholder.com/300x240?text=Docker+Deploy',
-      tags: ['Docker', '部署', 'DevOps'],
-      price: 42,
-      views: 9012,
-      likes: 823,
-      author: '钱十一',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Grace',
-      height: 310,
-    },
-    {
-      id: 10,
-      title: 'TypeScript 工具库',
-      description: 'TypeScript 常用工具函数库，包含日期处理、字符串操作、数组处理等功能。类型安全，易于使用。',
-      image: 'https://via.placeholder.com/300x320?text=TS+Utils',
-      tags: ['TypeScript', '工具库', 'utils'],
-      price: 28,
-      views: 10123,
-      likes: 912,
-      author: '孙十二',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Henry',
-      height: 390,
-    },
-    {
-      id: 11,
-      title: 'CSS 动画效果',
-      description: '精美的 CSS 动画效果集合，包含加载动画、过渡效果、3D 变换等。纯 CSS 实现，无依赖。',
-      image: 'https://via.placeholder.com/300x200?text=CSS+Animation',
-      tags: ['CSS', '动画', '效果'],
-      price: 19,
-      views: 11234,
-      likes: 1089,
-      author: '李十三',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ivy',
-      height: 280,
-    },
-    {
-      id: 12,
-      title: '算法题解合集',
-      description: 'LeetCode 热门算法题解，包含详细注释和多种解法。适合算法学习和面试准备。',
-      image: 'https://via.placeholder.com/300x350?text=Algorithms',
-      tags: ['算法', 'LeetCode', '面试'],
-      price: 45,
-      views: 12345,
-      likes: 1234,
-      author: '王十四',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jack',
-      height: 400,
-    },
-  ]
-
-  /**
-   * 瀑布流的响应式断点配置
-   * 不同屏幕尺寸显示不同数量的列
-   */
-  const breakpointColumnsObj = {
-    default: 4, // 默认4列
-    1920: 5, // 超大屏幕5列
-    1600: 4, // 大屏幕4列
-    1200: 3, // 中等屏幕3列
-    768: 2, // 平板2列
-    500: 1, // 手机1列
+    for (let i = 0; i < 20; i++) {
+      const height = heights[Math.floor(Math.random() * heights.length)]
+      const language = languages[Math.floor(Math.random() * languages.length)]
+      const framework = frameworks[Math.floor(Math.random() * frameworks.length)] || undefined
+      const randomTags = tags.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1)
+      const price = Math.random() > 0.3 ? Math.floor(Math.random() * 200) + 9 : 0 // 30% 免费
+      
+      codes.push({
+        id: i + 1,
+        title: projectTitles[i % projectTitles.length],
+        author: authors[Math.floor(Math.random() * authors.length)],
+        preview: previews[i % previews.length] + `&sig=${i}`,
+        price,
+        downloads: Math.floor(Math.random() * 5000) + 50,
+        rating: Math.random() * 2 + 3, // 3-5星
+        language,
+        framework,
+        likes: Math.floor(Math.random() * 300) + 10,
+        comments: Math.floor(Math.random() * 50),
+        tags: randomTags,
+        height,
+      })
+    }
+    
+    return codes
   }
 
-  // 返回 JSX（shadcn/ui + Tailwind）
-  // 组合过滤：标题或标签或作者任一命中
-  const filtered = codeItems.filter((item) => {
-    if (!searchValue) return true;
-    const v = searchValue.toLowerCase();
-    return (
-      item.title.toLowerCase().includes(v) ||
-      item.author.toLowerCase().includes(v) ||
-      item.tags.some((t: string) => t.toLowerCase().includes(v))
-    );
-  });
+  const codes = generateCodes()
+
+  // 分类导航数据 - 类比参考网站
+  const categories = [
+    {
+      icon: Code2,
+      title: "前端框架",
+      description: "React Vue 组件库",
+      href: "/explore?category=frontend",
+      color: "text-cyan-400",
+      bgGradient: "from-cyan-500/10 to-blue-500/10",
+      borderColor: "border-cyan-500/30"
+    },
+    {
+      icon: Server,
+      title: "后端服务",
+      description: "API框架 微服务",
+      href: "/explore?category=backend",
+      color: "text-purple-400",
+      bgGradient: "from-purple-500/10 to-pink-500/10",
+      borderColor: "border-purple-500/30"
+    },
+    {
+      icon: Layers,
+      title: "全栈项目",
+      description: "管理系统 电商平台",
+      href: "/explore?category=fullstack",
+      color: "text-pink-400",
+      bgGradient: "from-pink-500/10 to-rose-500/10",
+      borderColor: "border-pink-500/30"
+    },
+    {
+      icon: Wrench,
+      title: "工具库",
+      description: "开发工具 实用组件",
+      href: "/explore?category=tools",
+      color: "text-yellow-400",
+      bgGradient: "from-yellow-500/10 to-orange-500/10",
+      borderColor: "border-yellow-500/30"
+    },
+    {
+      icon: Smartphone,
+      title: "移动开发",
+      description: "React Native Flutter",
+      href: "/explore?category=mobile",
+      color: "text-green-400",
+      bgGradient: "from-green-500/10 to-emerald-500/10",
+      borderColor: "border-green-500/30"
+    },
+    {
+      icon: BarChart3,
+      title: "数据可视化",
+      description: "图表库 Dashboard",
+      href: "/explore?category=visualization",
+      color: "text-indigo-400",
+      bgGradient: "from-indigo-500/10 to-violet-500/10",
+      borderColor: "border-indigo-500/30"
+    }
+  ]
+
+  // 活动数据 - 图片形式，增加数量以适应宽度
+  const activities = [
+    { 
+      title: "视频爆款活动", 
+      image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=200&fit=crop",
+      href: "/explore?activity=video"
+    },
+    { 
+      title: "万圣节活动", 
+      image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=200&fit=crop",
+      href: "/explore?activity=halloween"
+    },
+    { 
+      title: "新用户注册送¥50", 
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=200&fit=crop",
+      href: "/explore?activity=register"
+    },
+    { 
+      title: "双十一限时优惠", 
+      image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&h=200&fit=crop",
+      href: "/explore?activity=double11"
+    },
+    { 
+      title: "热门代码精选", 
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=200&fit=crop",
+      href: "/explore?activity=hot"
+    }
+  ]
 
   return (
-    <div className="max-w-[1200px] mx-auto">
-      {/* 筛选与发布 */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center flex-wrap gap-3">
-          <span className="text-sm text-foreground/80">筛选：</span>
-          {['全部','React','Vue','Node.js','Python','移动端','UI组件'].map(tag => (
-            <button
-              key={tag}
-              type="button"
-              onClick={() => setSearchValue(tag === '全部' ? '' : tag)}
-              className={'chip ' + (searchValue === tag ? 'chip-active' : '')}
+    <div className="min-h-screen py-8">
+      <div className="pl-4 pr-2 lg:pl-6 lg:pr-4 xl:pl-8 xl:pr-6">
+        {/* 活动图片栏 - 一行横向展示，适应宽度 */}
+        <div className="mb-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {activities.map((activity, idx) => (
+            <Link
+              key={idx}
+              to={activity.href}
+              className="group relative aspect-video overflow-hidden rounded-xl transition-all hover:scale-[1.02] hover:shadow-2xl"
             >
-              {tag}
-            </button>
+              <img
+                src={activity.image}
+                alt={activity.title}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-3">
+                <span className="text-sm font-bold text-white drop-shadow-lg">{activity.title}</span>
+              </div>
+            </Link>
           ))}
         </div>
-        <Button className="h-10">
-          <Code className="w-4 h-4 mr-2" /> 发布代码
-        </Button>
-      </div>
 
-      {/* 瀑布流布局 */}
-      <Masonry
-        breakpointCols={{ default: 4, 1100: 3, 700: 2, 500: 1 }}
-        className="masonry-grid"
-        columnClassName="masonry-grid_column"
-      >
-        {filtered.map((item) => (
-          <Card key={item.id} className="mb-4 neumo-card">
-            <CardHeader className="p-0">
-              <div className="relative cover-gradient rounded-md overflow-hidden" style={{ height: item.height }}>
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover opacity-60"
-                >
-                  <source src="https://liblibai-online.liblib.cloud/img/2509cd139f904e7a825c47e6ed687e62/afb8a7a7d29ce2bf0cba4fe5f477cf462b5dbffa2a3e5a841826705cdba993b6.mp4" type="video/mp4" />
-                </video>
-                <div className="cover-overlay"></div>
-                <div className="relative z-10 h-full w-full flex items-center justify-center text-white text-base font-semibold">
-                  预览：{item.title}
+        {/* 分类导航卡片 - 扁平设计，适应宽度 */}
+        <div className="mb-8 flex gap-3">
+          {categories.map((category) => {
+            const Icon = category.icon
+            return (
+              <Link
+                key={category.href}
+                to={category.href}
+                className={`group relative flex flex-1 items-center gap-3 overflow-hidden rounded-lg border bg-gradient-to-br ${category.bgGradient} ${category.borderColor} px-4 py-3 transition-all hover:border-opacity-60 hover:shadow-lg`}
+              >
+                <Icon className={`h-5 w-5 flex-shrink-0 ${category.color}`} />
+                <div className="flex-1 min-w-0">
+                  <h3 className="mb-0.5 text-sm font-bold text-white group-hover:text-white/90 truncate">
+                    {category.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 group-hover:text-slate-300 truncate">
+                    {category.description}
+                  </p>
                 </div>
-                <div className="relative z-10 absolute bottom-0 inset-x-0 p-2 flex items-center justify-between text-white text-xs">
-                  <span className="opacity-90">￥{item.price}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex items-center gap-1"><Eye className="w-4 h-4 icon-muted icon-hover" /> {item.views}</span>
-                    <span className="inline-flex items-center gap-1"><Heart className="w-4 h-4 icon-muted icon-hover" /> {item.likes}</span>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-3">
-              <h3 className="text-base font-semibold mb-1.5 leading-tight">{item.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{item.description}</p>
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {item.tags.map((tag, idx) => (
-                  <span key={idx} className="chip text-xs">{tag}</span>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 mt-2.5">
-                <Avatar className="avatar-md">
-                  <AvatarImage src={item.avatar} />
-                  <AvatarFallback>{item.author.slice(0,1)}</AvatarFallback>
-                </Avatar>
-                <span className="text-sm">{item.author}</span>
-              </div>
-            </CardContent>
-            <CardFooter className="flex items-center justify-between px-3 py-2.5">
-              <span className="font-bold text-lg" style={{color: '#667eea'}}>￥{item.price}</span>
-              <button type="button" className="btn-buy text-sm">
-                <Download className="w-4 h-4" />
-                立即购买
-              </button>
-            </CardFooter>
-          </Card>
-        ))}
-      </Masonry>
+              </Link>
+            )
+          })}
+        </div>
+
+        {/* 瀑布流布局 */}
+        <div 
+          className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4"
+          style={{
+            columnGap: '1rem',
+          }}
+        >
+          {codes.map((code) => (
+            <div key={code.id} className="break-inside-avoid mb-4">
+              <CodeCard {...code} />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
