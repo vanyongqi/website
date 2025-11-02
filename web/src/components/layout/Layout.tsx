@@ -1,4 +1,5 @@
 import { useState, createContext, useContext, useEffect, type ReactNode } from "react"
+import { useTheme } from "@/contexts/ThemeContext"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 import Banner from "./Banner"
@@ -21,6 +22,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const { theme } = useTheme()
   const [isExpanded, setIsExpanded] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
   const [isBannerVisible, setIsBannerVisible] = useState(() => {
@@ -72,7 +74,11 @@ export default function Layout({ children }: LayoutProps) {
           }}
         >
           <Header topOffset={topOffset} />
-          <main className="flex-1 bg-gradient-to-br from-slate-950 via-purple-950/20 to-slate-950">
+          <main className={`flex-1 bg-gradient-to-br ${
+            theme === "light" 
+              ? "from-blue-50 via-cyan-50/50 to-blue-50"
+              : "from-slate-950 via-purple-950/20 to-slate-950"
+          }`}>
             {children}
           </main>
         </div>

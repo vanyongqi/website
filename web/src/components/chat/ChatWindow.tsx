@@ -30,7 +30,7 @@ export default function ChatWindow({
     {
       id: '1',
       role: 'assistant',
-      content: '你好！我是代码商城的智能客服，有什么可以帮助你的吗？😊',
+      content: '你好！我是猿代码的智能客服，有什么可以帮助你的吗？😊',
       timestamp: new Date()
     }
   ])
@@ -105,10 +105,8 @@ export default function ChatWindow({
       {/* 顶部标题栏 */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-purple-500/20 bg-slate-800/50">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-400 p-0.5">
-              <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
-                <ChatBotAvatar />
-              </div>
+            <div className="h-8 w-8 flex items-center justify-center">
+              <ChatBotAvatar />
             </div>
           <div>
             <h3 className="text-sm font-bold text-white">智能客服</h3>

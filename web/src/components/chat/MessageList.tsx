@@ -40,10 +40,8 @@ export default function MessageList({ messages, isLoading }: MessageListProps) {
           className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
         >
           {message.role === 'assistant' && (
-            <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-400 p-0.5">
-              <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
-                <ChatBotAvatar />
-              </div>
+            <div className="flex-shrink-0 h-8 w-8 flex items-center justify-center">
+              <ChatBotAvatar />
             </div>
           )}
           
@@ -66,10 +64,8 @@ export default function MessageList({ messages, isLoading }: MessageListProps) {
           </div>
 
           {message.role === 'user' && (
-            <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 p-0.5">
-              <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
-                <User className="h-4 w-4 text-purple-300" />
-              </div>
+            <div className="flex-shrink-0 h-8 w-8 flex items-center justify-center">
+              <User className="h-4 w-4 text-purple-300" />
             </div>
           )}
         </motion.div>
@@ -82,10 +78,8 @@ export default function MessageList({ messages, isLoading }: MessageListProps) {
           animate={{ opacity: 1 }}
           className="flex gap-3 justify-start"
         >
-          <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-400 p-0.5">
-            <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
-              <ChatBotAvatar />
-            </div>
+          <div className="flex-shrink-0 h-8 w-8 flex items-center justify-center">
+            <ChatBotAvatar />
           </div>
           <div className="bg-slate-800/50 border border-purple-500/20 rounded-2xl px-4 py-2">
             <div className="flex gap-1">

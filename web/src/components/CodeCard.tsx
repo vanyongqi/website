@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Heart, MessageCircle, Share2, Download, DollarSign, Star, Code } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useTheme } from "@/contexts/ThemeContext"
 
 interface CodeCardProps {
   id: number
@@ -51,6 +52,8 @@ export default function CodeCard({
   tags,
   height = "medium",
 }: CodeCardProps) {
+  const { theme } = useTheme()
+  
   // 根据高度设置不同的预览图高度，模拟瀑布流效果
   const previewHeights = {
     short: "h-52",
@@ -60,12 +63,30 @@ export default function CodeCard({
 
   const languageColor = languageColors[language] || "bg-gray-500"
 
+  const cardBg = theme === "light"
+    ? "bg-gradient-to-br from-blue-50/80 via-cyan-50/60 to-blue-50/80"
+    : "bg-gradient-to-br from-slate-900/50 to-slate-800/50"
+
+  const borderColor = theme === "light"
+    ? "border-blue-200/15 border-[0.5px]"
+    : "border-purple-500/8 border-[0.5px]"
+
   return (
-    <Card className="overflow-hidden hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 group cursor-pointer border-purple-500/20 bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-sm">
+    <Card className={cn(
+      "overflow-hidden hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 group cursor-pointer backdrop-blur-sm",
+      cardBg,
+      borderColor
+    )}>
       <Link to={`/codes/${id}`}>
         <div className="relative overflow-hidden">
           {/* 代码预览图/项目截图 */}
-          <div className={cn("relative w-full bg-gradient-to-br from-purple-900/30 via-slate-900 to-cyan-900/30", previewHeights[height])}>
+          <div className={cn(
+            "relative w-full",
+            previewHeights[height],
+            theme === "light"
+              ? "bg-gradient-to-br from-blue-100/40 via-cyan-100/30 to-blue-100/40"
+              : "bg-gradient-to-br from-purple-900/30 via-slate-900 to-cyan-900/30"
+          )}>
             <img
               src={preview}
               alt={title}

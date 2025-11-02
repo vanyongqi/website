@@ -2,7 +2,10 @@ import CodeCard from "@/components/CodeCard"
 import { Code2, Server, Layers, Wrench, Smartphone, BarChart3 } from "lucide-react"
 import { Link } from "react-router-dom"
 
+import { useTheme } from "@/contexts/ThemeContext"
+
 export default function Home() {
+  const { theme } = useTheme()
   // 生成代码项目数据
   const generateCodes = () => {
     const codes = []
@@ -184,14 +187,28 @@ export default function Home() {
               <Link
                 key={category.href}
                 to={category.href}
-                className={`group relative flex flex-1 items-center gap-3 overflow-hidden rounded-lg border bg-gradient-to-br ${category.bgGradient} ${category.borderColor} px-4 py-3 transition-all hover:border-opacity-60 hover:shadow-lg`}
+                className={`group relative flex flex-1 items-center gap-3 overflow-hidden rounded-lg border px-4 py-3 transition-all hover:border-opacity-60 hover:shadow-lg ${
+                  theme === "light"
+                    ? `bg-gradient-to-br from-blue-50/80 to-cyan-50/60 border-blue-200/30 border-[0.5px]`
+                    : `bg-gradient-to-br ${category.bgGradient} ${category.borderColor}`
+                }`}
               >
-                <Icon className={`h-5 w-5 flex-shrink-0 ${category.color}`} />
+                <Icon className={`h-5 w-5 flex-shrink-0 ${
+                  theme === "light" ? "text-cyan-600" : category.color
+                }`} />
                 <div className="flex-1 min-w-0">
-                  <h3 className="mb-0.5 text-sm font-bold text-white group-hover:text-white/90 truncate">
+                  <h3 className={`mb-0.5 text-sm font-bold truncate ${
+                    theme === "light"
+                      ? "text-slate-900 group-hover:text-cyan-700"
+                      : "text-white group-hover:text-white/90"
+                  }`}>
                     {category.title}
                   </h3>
-                  <p className="text-xs text-slate-400 group-hover:text-slate-300 truncate">
+                  <p className={`text-xs truncate ${
+                    theme === "light"
+                      ? "text-slate-600 group-hover:text-slate-700"
+                      : "text-slate-400 group-hover:text-slate-300"
+                  }`}>
                     {category.description}
                   </p>
                 </div>

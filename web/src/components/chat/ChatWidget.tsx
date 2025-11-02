@@ -44,7 +44,7 @@ export default function ChatWidget() {
           {/* 新消息提示 */}
           {hasNewMessage && (
             <motion.div
-              className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 border-2 border-slate-950 z-10"
+              className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500 border-2 border-slate-950 z-10"
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [1, 0.8, 1]
@@ -57,10 +57,8 @@ export default function ChatWidget() {
           )}
           
           {/* 机器人头像 */}
-          <div className="relative h-16 w-16 rounded-full bg-gradient-to-br from-cyan-400 via-purple-400 to-pink-400 p-1 shadow-2xl">
-            <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
-              <ChatBotAvatar />
-            </div>
+          <div className="relative h-16 w-16 flex items-center justify-center">
+            <ChatBotAvatar />
           </div>
         </div>
       </motion.div>
