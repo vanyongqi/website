@@ -13,9 +13,12 @@ import CodeDetail from "./pages/CodeDetail"
 import PublishCode from "./pages/PublishCode"
 
 function App() {
+  // 在生产环境且部署到 GitHub Pages 时使用 /website/ 作为 base path
+  const basename = import.meta.env.PROD ? '/website' : ''
+  
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
