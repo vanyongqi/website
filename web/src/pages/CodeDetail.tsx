@@ -1,11 +1,10 @@
 import { useParams } from "react-router-dom"
 import { useState } from "react"
 import { useTheme } from "@/contexts/ThemeContext"
-import { Heart, ShoppingCart, Star, Download, Code2, Calendar, User, Tag, CheckCircle } from "lucide-react"
+import { Heart, ShoppingCart, Star, Calendar, User, Tag, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 
 // 模拟数据

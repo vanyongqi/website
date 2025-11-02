@@ -8,7 +8,6 @@ import {
   TrendingUp, 
   Heart, 
   Code,
-  FolderOpen,
   Star,
   Menu,
   Settings,

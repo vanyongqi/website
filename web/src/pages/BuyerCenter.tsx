@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { ShoppingBag, Heart, Star, Clock, CheckCircle, Package, Download } from "lucide-react"
+import { ShoppingBag, Heart, Star, CheckCircle, Package, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -87,9 +87,6 @@ export default function BuyerCenter() {
     : "bg-slate-900/50 border-slate-800"
   
   const cardTitleColor = theme === "light" ? "text-slate-600" : "text-slate-400"
-  const itemBg = theme === "light"
-    ? "bg-blue-50/40 border-blue-200/15 border-[0.5px]"
-    : "bg-slate-800/50 border-slate-700"
   const itemTextColor = theme === "light" ? "text-slate-700" : "text-white"
   const itemSubtextColor = theme === "light" ? "text-slate-500" : "text-slate-400"
   const tabsBg = theme === "light"
